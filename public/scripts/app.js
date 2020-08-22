@@ -62,27 +62,31 @@ $(() => {
   }
   mymap.on("click", onMapClick); */
 
-  function onMapClick(e) {
+  // Drop a new pin and submit a form > POST /pins
+  function dropNewPin(e) {
     console.log(e);
     console.log(e.latlng);
 
-    const newMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
+    const newMarker = L.marker([e.latlng.lat, e.latlng.lng], {
+      title: "appears on hover",
+      draggable: true,
+      riseOnHover: true,
+    }).addTo(mymap);
 
     // newMarker.bindPopup(`lat:${e.latlng.lat}, lng:${e.latlng.lng}`).openPopup();
     newMarker
       .bindPopup(
         `
-      <form action="/">
-        <label for="fname">First name:</label><br>
-        <input type="text" id="fname" name="fname" value="John"><br>
-        <label for="lname">Last name:</label><br>
-        <input type="text" id="lname" name="lname" value="Doe"><br><br>
-        <input type="submit" value="Submit">
-      </form> 
-`
+        <form method='POST' action="/pins">
+          <label for="title">Place:</label><br>
+          <input type="text" id="title" name="title" value="Place"><br>
+          <label for="description">Description:</label><br>
+          <input type="text" id="description" name="description" value="Description"><br><br>
+          <input type="submit" value="Submit">
+        </form>`
       )
       .openPopup();
   }
 
-  mymap.on("click", onMapClick);
+  mymap.on("click", dropNewPin);
 });
