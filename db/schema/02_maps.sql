@@ -6,8 +6,8 @@ CREATE TABLE maps (
   title VARCHAR(255) NOT NULL,
   country VARCHAR(255),
   city VARCHAR(255),
-  latitude NUMERIC(17, 15),
-  longitude NUMERIC(17, 15),
+  latitude FLOAT NOT NULL,
+  longitude FLOAT NOT NULL,
   created_at DATE NOT NULL,
   removed_at DATE DEFAULT NULL,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
