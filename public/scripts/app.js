@@ -15,7 +15,7 @@ $(() => {
 
   // Add tileLayer to our map
   L.tileLayer(
-    "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=GWJMQEvhI4ph9fwqGcab",
+    "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=8XDAnrbH4UlK8LQKyTB9",
     {
       attribution:
         '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
@@ -33,7 +33,7 @@ $(() => {
     radius: 500,
   }).addTo(mymap);
 
-  // Add a circle at [lat,long]
+  // Add a polygon at [lat,long]
   const polygon = L.polygon([
     [51.509, -0.08],
     [51.503, -0.06],
@@ -88,14 +88,11 @@ $(() => {
           <input name="lat" type="hidden" value='${e.latlng.lat}'>
           <input name="lng" type="hidden" value='${e.latlng.lng}'>
           </input>
-           
-          </form>
+        </form>
         `
       )
       .openPopup();
   }
-
-  // passing an input inside form, make it hidden
 
   mymap.on("click", dropNewPin);
 });
