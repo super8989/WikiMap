@@ -9,7 +9,7 @@ const getUserByUsername = function(db, submittedUsername) {
   SELECT *
   FROM users
   WHERE username ~* $1
-  `, [submittedUsername])
+  `, [`^${submittedUsername}$`])
   .then(res => res.rows[0]);
 };
 
@@ -19,8 +19,8 @@ const getUserByEmail = function(db, submittedEmail) {
   return db.query(`
   SELECT *
   FROM users
-  WHERE email = $1
-  `, [submittedEmail])
+  WHERE email ~* $1
+  `, [`^${submittedEmail}$`])
   .then(res => res.rows[0]);
 };
 
@@ -29,8 +29,8 @@ const getUserByEmail = function(db, submittedEmail) {
 const addUser = function(db, user) {
   user.password = bcrypt.hashSync(user.password, saltRounds);
   return db.query(`
-  INSERT INTO users (username, email, password)
-  VALUES ($1, $2, $3)
+  INSERT INTO users (username, email, password, created_at)
+  VALUES ($1, $2, $3, now()::date)
   RETURNING *
   `, [user.username, user.email, user.password])
   .then(res => res.rows[0]);
