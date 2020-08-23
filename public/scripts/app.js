@@ -62,12 +62,13 @@ $(() => {
   }
   mymap.on("click", onMapClick); */
 
+  let newMarker;
   // Drop a new pin and submit a form > POST /pins
   function dropNewPin(e) {
     console.log(e);
     console.log(e.latlng);
 
-    const newMarker = L.marker([e.latlng.lat, e.latlng.lng], {
+    newMarker = L.marker([e.latlng.lat, e.latlng.lng], {
       title: "appears on hover",
       draggable: true,
       riseOnHover: true,
@@ -82,11 +83,19 @@ $(() => {
           <input type="text" id="title" name="title" value="Place"><br>
           <label for="description">Description:</label><br>
           <input type="text" id="description" name="description" value="Description"><br><br>
-          <input type="submit" value="Submit">
-        </form>`
+          <button type="submit">Submit</button> 
+          
+          <input name="lat" type="hidden" value='${e.latlng.lat}'>
+          <input name="lng" type="hidden" value='${e.latlng.lng}'>
+          </input>
+           
+          </form>
+        `
       )
       .openPopup();
   }
+
+  // passing an input inside form, make it hidden
 
   mymap.on("click", dropNewPin);
 });
