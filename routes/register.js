@@ -8,7 +8,7 @@ module.exports = (db) => {
 
   // GET /register if no user is logged in. If user is logged in, redirect to /maps.
   router.get('/register', (req, res) => {
-    const userID = req.session && req.session.user_id;
+    const userID = req.session.user_id;
     if (!userID) {
       res.render('register');
     } else {
