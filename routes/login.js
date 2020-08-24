@@ -31,30 +31,30 @@ module.exports = (db) => {
       res.render('400', templateVars);
     } else {
       getUserByUsername(db, user.username)
-      .then(existingUser => {
-        if (!existingUser) {
-          res.statusCode = 403;
-          templateVars.message = 'Incorrect username, email and/or password.';
-          res.render('403', templateVars);
-        } else {
-          getUserByEmail(db, user.email)
-          .then(existingUser => {
-            if (!existingUser) {
-              res.statusCode = 403;
-              templateVars.message = 'Incorrect username, email and/or password.';
-              res.render('403', templateVars);
-            } else if (!bcrypt.compareSync(user.password, existingUser.password)) {
-              res.statusCode = 403;
-              templateVars.message = 'Incorrect username, email and/or password.';
-              res.render('403', templateVars);
-            } else {
-              const userID = existingUser.id;
-              req.session.user_id = userID;
-              res.redirect('/maps');
-            }
-          });
-        }
-      });
+        .then(existingUser => {
+          if (!existingUser) {
+            res.statusCode = 403;
+            templateVars.message = 'Incorrect username, email and/or password.';
+            res.render('403', templateVars);
+          } else {
+            getUserByEmail(db, user.email)
+              .then(existingUser => {
+                if (!existingUser) {
+                  res.statusCode = 403;
+                  templateVars.message = 'Incorrect username, email and/or password.';
+                  res.render('403', templateVars);
+                } else if (!bcrypt.compareSync(user.password, existingUser.password)) {
+                  res.statusCode = 403;
+                  templateVars.message = 'Incorrect username, email and/or password.';
+                  res.render('403', templateVars);
+                } else {
+                  const userID = existingUser.id;
+                  req.session.user_id = userID;
+                  res.redirect('/maps');
+                }
+              });
+          }
+        });
     }
   });
 
