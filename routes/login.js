@@ -58,7 +58,7 @@ module.exports = (db) => {
     }
   });
 
-  // POST to /logout.
+  // POST to /logout and destroy session cookie.
   router.post('/logout', (req, res) => {
     req.session = null;
     res.redirect('/maps');
