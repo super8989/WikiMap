@@ -1,14 +1,20 @@
-/*
- * All routes for Widgets are defined here
- * Since this file is loaded in server.js into api/widgets,
- *   these routes are mounted onto /widgets
- * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
- */
-
 const express = require("express");
+const { getAllPinsFromDb } = require("../database");
 const router = express.Router();
 
+// how can i use getAllPinsFromDb from the database.js inside router.get
+
 module.exports = (db) => {
+  router.get("/", (req, res) => {
+    // const pinsData = getAllPinsFromDb().then((result) => {
+    //   console.log(result[0]);
+    //   return result[0];
+    // });
+
+    res.render("maps");
+  });
+
+  // Add a new pin to db
   router.post("/", (req, res) => {
     let queryString = `
       INSERT INTO pins (title, description, lat, lng) VALUES ($1, $2, $3, $4) RETURNING *;
@@ -17,7 +23,8 @@ module.exports = (db) => {
     let values = req.body;
     let { title, description, lat, lng } = values;
 
-    console.log(values);
+    console.log("values", values);
+
     db.query(queryString, [
       title,
       description,
@@ -25,12 +32,13 @@ module.exports = (db) => {
       parseFloat(lng),
     ])
       .then((data) => {
-        console.log(data.rows);
+        console.log("data.rows", data.rows);
         return data.rows;
       })
       .catch((err) => console.error("query error", err.stack));
     // console.log([values.title, values.description]);
-    res.redirect("/");
+    res.redirect("/maps");
   });
+
   return router;
 };

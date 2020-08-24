@@ -39,7 +39,7 @@ app.use(express.static("public"));
 const usersRoutes = require("./routes/users");
 const widgetsRoutes = require("./routes/widgets");
 const pinsRoutes = require("./routes/pinsDb");
-const newPins = require("./routes/pins");
+const mapsRoutes = require("./routes/maps");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -48,7 +48,8 @@ app.use("/api/widgets", widgetsRoutes(db));
 app.use("/api/pins", pinsRoutes(db));
 
 // Insert new pins into db
-app.use("/pins", newPins(db));
+app.use("/maps", mapsRoutes(db));
+
 // Note: mount other resources here, using the same pattern above
 
 // Home page
@@ -57,12 +58,6 @@ app.use("/pins", newPins(db));
 app.get("/", (req, res) => {
   res.render("index");
 });
-
-// From app.js dropNewPin
-// app.post("/pins", (req, res) => {
-//   console.log(req.body);
-//   res.send("form submitted");
-// });
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
