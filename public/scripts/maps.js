@@ -23,12 +23,10 @@ $(() => {
       .bindPopup(`
       <p>Place: ${obj.title}</p>
       <p>Description: ${obj.description}</p>
-      <p>Image url: ${obj.image_url}</p>
-      <p>Latitude: ${obj.latitude}</p>
-      <p>Longitude: ${obj.longitude}</p>
-      <p>id: ${obj.id}</p>
+      <img src="${obj.image_url}" alt="Pin image" class="img-thumbnail showImg">
+      <p>Created by: ${obj.id}</p>
       <form method="POST" action='/maps/${obj.id}/delete'>
-        <button>Delete</button>
+        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
       </form>
       `);
   };
@@ -60,17 +58,18 @@ $(() => {
         `
         <form method='POST' action="/maps">
           <label for="title">Place:</label><br>
-          <input type="text" id="title" name="title" value="title"><br>
+          <input id="title" name="title" class="form-control form-control-sm" type="text" placeholder="Title"><br>
           <label for="description">Description:</label><br>
-          <input type="text" id="description" name="description" value="description"><br><br>
+          <input name="description" id="description" class="form-control form-control-sm" type="text" placeholder="Description"><br>
           <label for="image_url">Image:</label><br>
-          <input type="text" id="image_url" name="image_url" value="image url"><br><br>
-          <button type="submit">Submit</button>
+          <input name="image_url" id="image_url" class="form-control form-control-sm" type="text" placeholder="Image URL"><br>
+          <button type="submit" class="btn btn-primary btn-sm">Create new pin!</button>
           <input name="latitude" type="hidden" value='${e.latlng.lat}'>
           <input name="longitude" type="hidden" value='${e.latlng.lng}'>
         </form>
+        <hr>
         <form>
-          <button type="submit">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Cancel</button>
         </form>
         `
       )

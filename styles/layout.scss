@@ -15,7 +15,10 @@
 }
 
 .leaflet-popup-content {
-	width: 15rem;
+  width: 15rem;
+  p {
+    font-size: 1rem;
+  }
 }
 
 label {
