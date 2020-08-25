@@ -50,6 +50,7 @@ module.exports = (db) => {
                 } else {
                   const userID = existingUser.id;
                   req.session.user_id = userID;
+                  res.cookie('username', existingUser.username);
                   res.redirect('/maps');
                 }
               });
