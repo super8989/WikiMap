@@ -6,7 +6,7 @@ const router  = express.Router();
 module.exports = (db) => {
 
   // POST to /logout and destroy session cookie.
-  router.post('/logout', (req, res) => {
+  router.post('/', (req, res) => {
     req.session = null;
     res.redirect('/');
   });
