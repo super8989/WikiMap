@@ -19,7 +19,9 @@
       <tbody>
         <% for (let userFave of userFaves) { %>
           <tr>
-            <td><%= userFave.title %></td>
+            <td>
+              <a href=<%= `/maps/${userFave.id}` %>><%= userFave.title %></a>
+            </td>
           </tr>
           <% } %>
         </tbody>
@@ -29,7 +31,9 @@
       <tbody>
         <% for (let userMap of userMaps) { %>
           <tr>
-            <td><%= userMap.title %></td>
+            <td>
+              <a href=<%= `/maps/${userMap.id}` %>><%= userMap.title %></a>
+            </td>
           </tr>
           <% } %>
         </tbody>
@@ -39,7 +43,9 @@
         <tbody>
           <% for (let userPin of userPins) { %>
           <tr>
-            <td><%= userPin.title %></td>
+            <td>
+              <a href=<%= `/maps/${userPin.id}` %>><%= userPin.title %></a>
+            </td>
           </tr>
           <% } %>
         </tbody>
