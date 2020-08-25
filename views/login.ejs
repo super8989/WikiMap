@@ -19,15 +19,15 @@
   <!-- Make sure you put this AFTER Leaflet's CSS -->
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
-  </head>
-  <body>
+</head>
+<body>
 
-  <%- include('partials/_header') %>
+<%- include('partials/_header') %>
 
   <section class="jumbotron">
     <div class="container">
-      <h2>Create Account</h2><hr>
-      <form class="form" action="/register" method="POST">
+      <h2>Login</h2><hr>
+      <form class="form" action="/login" method="POST">
         <div class="form-group mb-2">
           <label for="username">Username:</label>
           <input class="form-control" type="username" name="username" placeholder="Enter username">
@@ -40,11 +40,11 @@
           <label for="password">Password:</label>
           <input class="form-control" type="password" name="password" placeholder="Enter password">
         </div>
-          <button type="submit" class="btn btn-primary">Register</button>
+          <button type="submit" class="btn btn-primary">Login</button>
       </form>
   </section>
 
-  <%- include('partials/_footer') %>
+    <%- include('partials/_footer') %>
 
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

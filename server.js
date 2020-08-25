@@ -1,4 +1,4 @@
- // load .env data into process.env
+   // load .env data into process.env
 require('dotenv').config();
 
 // Web server config
@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 const sass       = require("node-sass-middleware");
 const app        = express();
 const morgan     = require('morgan');
+const cookieSession = require('cookie-session');
 
 // PG database client/connection setup
 const { Pool } = require('pg');
@@ -31,6 +32,10 @@ app.use("/styles", sass({
 }));
 app.use(express.static("public"));
 
+app.use(cookieSession({
+  name: 'session',
+  keys: ['randomstring', 'anotherrandomstring'],
+}));
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
 const usersRoutes = require("./routes/users");
@@ -38,10 +43,10 @@ const usersRoutes = require("./routes/users");
 const pinsRoutes = require("./routes/pinsDb");
 const mapsRoutes = require("./routes/maps");
 const registerRoutes = require("./routes/register");
+const loginRoutes = require("./routes/login");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
-app.use("/api/users", usersRoutes(db));
 app.use("/api/users", usersRoutes(db));
 // app.use("/api/widgets", widgetsRoutes(db));
 app.use("/api/pins", pinsRoutes(db));
@@ -50,12 +55,13 @@ app.use("/maps", mapsRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 app.use("/", registerRoutes(db));
+app.use("/", loginRoutes(db));
 
 // Home page
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", {user : null});
 });
 
 app.listen(PORT, () => {

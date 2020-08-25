@@ -11,7 +11,7 @@ module.exports = (db) => {
     //   return result[0];
     // });
 
-    res.render("maps");
+    res.render("maps", {user: null});
   });
 
   // Add a new pin to db

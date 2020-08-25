@@ -8,11 +8,11 @@ module.exports = (db) => {
 
   // GET /register if no user is logged in. If user is logged in, redirect to /maps.
   router.get('/register', (req, res) => {
-    const userID = req.session && req.session.user_id;
+    const userID = req.session.user_id;
     if (!userID) {
-      res.render('register');
+      res.render('register', {user: null});
     } else {
-      res.redirect('/maps');
+      res.redirect('/maps', {user: null});
     }
   });
 
@@ -30,25 +30,25 @@ module.exports = (db) => {
       res.render('400', templateVars);
     } else {
       getUserByUsername(db, user.username)
-      .then(existingUser => {
-        if (existingUser) {
-          res.statusCode = 400;
-          templateVars.message = 'Sorry, that username is already registered.';
-          res.render('400', templateVars)
-        } else {
-          getUserByEmail(db, user.email)
-          .then(existingUser => {
-            if (existingUser) {
-              res.statusCode = 400;
-              templateVars.message = 'Sorry, that email is already registered.';
-              res.render('400', templateVars);
-            } else {
-              addUser(db, user);
-              res.redirect('/maps');
-            }
-          });
-        }
-      });
+        .then(existingUser => {
+          if (existingUser) {
+            res.statusCode = 400;
+            templateVars.message = 'Sorry, that username is already registered.';
+            res.render('400', templateVars);
+          } else {
+            getUserByEmail(db, user.email)
+              .then(existingUser => {
+                if (existingUser) {
+                  res.statusCode = 400;
+                  templateVars.message = 'Sorry, that email is already registered.';
+                  res.render('400', templateVars);
+                } else {
+                  addUser(db, user);
+                  res.redirect('/maps', {user: null});
+                }
+              });
+          }
+        });
     }
   });
 
