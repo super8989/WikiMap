@@ -51,7 +51,7 @@ const addUser = function(db, user) {
 
 const getUserMaps = function(db, user) {
   return db.query(`
-  SELECT title
+  SELECT title, id
   FROM maps
   WHERE maps.user_id = $1
   `, [user])
@@ -62,7 +62,7 @@ const getUserMaps = function(db, user) {
 
 const getUserFaves = function(db, user) {
   return db.query(`
-  SELECT maps.title
+  SELECT maps.title, maps.id
   FROM user_favourites
   JOIN maps on user_favourites.map_id = maps.id
   WHERE user_favourites.user_id = $1
@@ -74,7 +74,7 @@ const getUserFaves = function(db, user) {
 
 const getUserPins = function(db, user) {
   return db.query(`
-  SELECT DISTINCT maps.title
+  SELECT DISTINCT maps.title, maps.id
   FROM pins
   JOIN maps ON pins.map_id = maps.id
   WHERE pins.user_id = $1
