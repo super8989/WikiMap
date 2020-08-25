@@ -1,30 +1,60 @@
-$(() => {
-  const map = L.map("mapid").setView([43.65, -79.38], 13);
+// console.log("geocodingapi", geocodingAPI);
+//on the front end, event listenenr listens to the click  // same cycle as Tweeter the tweet post cycle
 
-  // Add tileLayer to our map
-  L.tileLayer(
-    `https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=8XDAnrbH4UlK8LQKyTB9`,
-    {
-      attribution: `
+$(document).ready(function () {
+  $.get(
+    `http://open.mapquestapi.com/geocoding/v1/address?key=${geocodingKey}&location=Toronto,ON`,
+    function (data, status) {
+      // console.log("latLng", data.results[0].locations[0].latLng);
+      newMap(data);
+    }
+  ).catch((err) => console.error("error", err.stack));
+
+  // Create a new map
+  const newMap = (geoCoordinates) => {
+    const latitude = geoCoordinates.results[0].locations[0].latLng.lat;
+    const longitude = geoCoordinates.results[0].locations[0].latLng.lng;
+    console.log(latitude, longitude);
+
+    // Map of Toronto
+    // const map = L.map("mapid").setView([43.65, -79.38], 13);
+
+    // Create a map based on the latlng from mapquest api call
+    const map = L.map("mapid").setView([latitude, longitude], 13);
+
+    // Add tileLayer to our map
+    L.tileLayer(
+      `https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=${mapTilerKey}`,
+      {
+        attribution: `
       <a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a>
       <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>`,
-    }
-  ).addTo(map);
+      }
+    ).addTo(map);
 
-  // Add a pin at [lat,long] > Initial = lighthouse labs
-  const marker = L.marker([43.64426, -79.40226]).addTo(map);
-  //openPopup() only works for markers
-  marker.bindPopup("Lighthouse Labs").openPopup();
+    /*   // Initial marker for lighthouse labs : ISSUE --> having initial marker sets the map view to the marker so needs to be removed
+    // const labsMarker = L.marker([43.64426, -79.40226]).addTo(map);
+    // const labsURL =
+    //   "https://856887.smushcdn.com/1859345/wp-content/uploads/2018/05/lighthouse-labs-300x300.png?lossy=0&strip=1&webp=1";
+    //openPopup() only works for markers
+    // labsMarker
+    //   .bindPopup(
+    //     `<p>Lighthouse Labs<br>The Best Place To Be</p>
+    //   <img style='max-width: 100%; max-height: 200px;'
+    //   src='${labsURL}'>`
+    //   )
+    //   .openPopup();
+    // labsMarker.popup("Lighthouse Labs").openOn(map); */
 
-  // Render pins on the map from db
-  const addPinsFromDb = (obj) => {
-    // console.log("addPinsFromDb obj in maps.js", obj);
-    const marker = L.marker([obj.latitude, obj.longitude]).addTo(map)
-      .bindPopup(`
+    // Render pins on the map from db
+    const addPinsFromDb = (obj) => {
+      // console.log("addPinsFromDb obj in maps.js", obj);
+      const marker = L.marker([obj.latitude, obj.longitude]).addTo(map)
+        .bindPopup(`
       <p>Place: ${obj.title}</p>
       <p>Description: ${obj.description}</p>
       <p>Image url: ${obj.image_url}</p>
-      <img style='width: 100%;' src='${obj.image_url}'>
+      <img style='max-width: 100%; max-height: 150px;' src='${obj.image_url}'>
       <p>Latitude: ${obj.latitude}</p>
       <p>Longitude: ${obj.longitude}</p>
       <p>id: ${obj.id}</p>
@@ -32,33 +62,33 @@ $(() => {
         <button>Delete</button>
       </form>
       `);
-  };
+    };
 
-  // AJAX request to api/pins to get the pin data
-  $.get("/api/pins", function (result) {
-    console.log("result.pins from .get /api/pins", result.pins);
-    result.pins.forEach((pinObj) => addPinsFromDb(pinObj));
-  });
+    // AJAX request to api/pins to get the pin data
+    $.get("/api/pins", function (result) {
+      // console.log("result.pins from .get /api/pins", result.pins);
+      result.pins.forEach((pinObj) => addPinsFromDb(pinObj));
+    });
 
-  //if not refreshing to get the pins, refer to Tweeter for the client side rendering
+    //if not refreshing to get the pins, refer to Tweeter for the client side rendering
 
-  //another example of AJAX: when i click this button, make an ajax request -- ajax = way to ask server for things
+    //another example of AJAX: when i click this button, make an ajax request -- ajax = way to ask server for things
 
-  // Drop a new pin and submit a form > POST /pins
-  function dropNewPin(e) {
-    console.log("e from dropNewPin", e);
-    console.log("e.latlng from dropNewPin", e.latlng);
+    // Drop a new pin and submit a form > POST /pins
+    function dropNewPin(e) {
+      console.log("e from dropNewPin", e);
+      console.log("e.latlng from dropNewPin", e.latlng);
 
-    const newMarker = L.marker([e.latlng.lat, e.latlng.lng], {
-      title: "appears on hover",
-      draggable: true,
-      riseOnHover: true,
-    }).addTo(map);
+      const newMarker = L.marker([e.latlng.lat, e.latlng.lng], {
+        title: "appears on hover",
+        draggable: true,
+        riseOnHover: true,
+      }).addTo(map);
 
-    // Send POST to pins.js
-    newMarker
-      .bindPopup(
-        `
+      // Send POST to pins.js
+      newMarker
+        .bindPopup(
+          `
         <form method='POST' action="/maps">
           <label for="title">Place:</label><br>
           <input type="text" id="title" name="title" value="title"><br>
@@ -74,19 +104,25 @@ $(() => {
           <button type="submit">Cancel</button>
         </form>
         `
-      )
-      .openPopup();
-  }
+        )
+        .openPopup();
+    }
 
-  // instead of a form, i could do an ajax post -> .then() gets the single object back from the server with res.json(data.rows[0]) because of RETURNING * -> call addPinFromDb() with the object returned --> so then the page would not be redirected and refreshed
+    // instead of a form, i could do an ajax post -> .then() gets the single object back from the server with res.json(data.rows[0]) because of RETURNING * -> call addPinFromDb() with the object returned --> so then the page would not be redirected and refreshed
 
-  // form without method defaults to get and gets the current page hence refreshes the page
+    // form without method defaults to get and gets the current page hence refreshes the page
 
-  // for creation date: let the server figure out creation date OR in sql use .now for creation date OR another hidden input data for creation date
+    // for creation date: let the server figure out creation date OR in sql use .now for creation date OR another hidden input data for creation date
 
-  map.on("click", dropNewPin);
+    map.on("click", dropNewPin);
+  };
+
+  // Create new map
+  // newMap();
 });
 
-// require("dotenv").config();
-// console.log("process.env", process.env);
-// const MAPTILER_KEY = process.env.MAPTILER_API_KEY;
+// question about the jquery and how it's creating the dom... so at the beginning of this i am creating the dom before creating the map onto the mapid div..?
+
+// also how can i make this whole thing a function so that i can call this to create a new map through calling the function?
+
+// Where should i use the AJAX call to make a get request to Mapquest to input lat and lng into the function newMap

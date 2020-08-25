@@ -1,12 +1,21 @@
 const express = require("express");
 const { getAllPinsFromDb } = require("../database");
 const router = express.Router();
+const env = require("dotenv").config({ path: "./.env" });
+
+const MAPTILER_API_KEY = env.MAPTILER_API_KEY;
+const GEOCODING_API_KEY = env.GEOCODING_API_KEY;
+console.log("apikey", GEOCODING_API_KEY);
 
 // how can i use getAllPinsFromDb from the database.js inside router.get
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
-    res.render("maps");
+    const templateVars = {
+      mapTilerKey: MAPTILER_API_KEY,
+      geocodingKey: GEOCODING_API_KEY,
+    };
+    res.render("maps", templateVars);
   });
 
   // Add a new pin to db
