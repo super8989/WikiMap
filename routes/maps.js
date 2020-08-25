@@ -40,5 +40,23 @@ module.exports = (db) => {
     res.redirect("/maps");
   });
 
+  // instead of res.redirect which refreshes the page, do res.json(data.rows[0]) to the popup with AJAX
+  //return data.rows[0] send only the single object back to the client side (due to RETURNING *) -> addPinFromDb only with that single object
+
+  // Remove pins from maps.js
+  router.post("/:id/delete", (req, res) => {
+    console.log("id from maps.js delete:", req.params.id);
+    let values = [req.params.id];
+    let queryString = `
+      DELETE FROM pins
+      WHERE id = $1;`;
+
+    db.query(queryString, values)
+      .then((data) => console.log(data))
+      .catch((err) => console.lerror("query error", err.stack));
+
+    res.redirect("/maps");
+  });
+
   return router;
 };

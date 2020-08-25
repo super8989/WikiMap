@@ -35,7 +35,17 @@ $(() => {
 
   // Render pins on the map from db
   const addPinsFromDb = (obj) => {
-    const marker = L.marker([obj.lat, obj.lng]).addTo(mymap);
+    // console.log("addPinsFromDb obj in maps.js", obj);
+    const marker = L.marker([obj.lat, obj.lng]).addTo(mymap).bindPopup(`
+      <p>Place: ${obj.title}</p>
+      <p>Description: ${obj.description}</p>
+      <p>Latitude: ${obj.lat}</p>
+      <p>Longitude: ${obj.lng}</p>
+      <p>id: ${obj.id}</p>
+      <form method="POST" action='/maps/${obj.id}/delete'>
+        <button>Delete</button>
+      </form>
+      `);
   };
 
   // AJAX request to api/pins to get the pin data
@@ -43,6 +53,8 @@ $(() => {
     console.log("result.pins", result.pins);
     result.pins.forEach((pinObj) => addPinsFromDb(pinObj));
   });
+
+  //if not refreshing to get the pins, refer to Tweeter for the client side rendering
 
   //another example of AJAX: when i click this button, make an ajax request -- ajax = way to ask server for things
 
@@ -63,13 +75,17 @@ $(() => {
   }
   mymap.on("click", onMapClick); */
 
-  let newMarker;
+  // function cancelForm {
+  //   console.log("clicked");
+  //   // document.querySelector("#map_container").   mymap.removeLayer(newMarker);
+  // }
+
   // Drop a new pin and submit a form > POST /pins
   function dropNewPin(e) {
     console.log(e);
     console.log(e.latlng);
 
-    newMarker = L.marker([e.latlng.lat, e.latlng.lng], {
+    const newMarker = L.marker([e.latlng.lat, e.latlng.lng], {
       title: "appears on hover",
       draggable: true,
       riseOnHover: true,
@@ -84,17 +100,21 @@ $(() => {
           <input type="text" id="title" name="title" value="Place"><br>
           <label for="description">Description:</label><br>
           <input type="text" id="description" name="description" value="Description"><br><br>
-          <button type="submit">Submit</button> 
-          
+          <button type="submit">Submit</button>
           <input name="lat" type="hidden" value='${e.latlng.lat}'>
           <input name="lng" type="hidden" value='${e.latlng.lng}'>
-
-          </input>
+        </form>
+        <form>
+          <button type="submit">Cancel</button>
         </form>
         `
       )
       .openPopup();
   }
+
+  // instead of a form, i could do an ajax post -> .then() gets the single object back from the server with res.json(data.rows[0]) because of RETURNING * -> call addPinFromDb() with the object returned --> so then the page would not be redirected and refreshed
+
+  // form without method defaults to get and gets the current page hence refreshes the page
 
   // for creation date: let the server figure out creation date OR in sql use .now for creation date OR another hidden input data for creation date
 
