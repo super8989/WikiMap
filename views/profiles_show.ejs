@@ -13,71 +13,39 @@
   </head>
 
 <body>
-    <main style="margin: 1em;">
-      <% if (ownerIsLoggedIn) { %>
-        <h2 class="title">My Favourites</h2>
-        <table class="table">
-          <tbody>
-            <% for (let userFave of userFaves) { %>
-            <tr>
-              <td><%= userFave.title %></td>
-            </tr>
-            <% } %>
-          </tbody>
-        </table>
-        <h2 class="title">My Maps</h2>
-        <table class="table">
-          <tbody>
-            <% for (let userMap of userMaps) { %>
-            <tr>
-              <td><%= userMap.title %></td>
-            </tr>
-            <% } %>
-          </tbody>
-        </table>
-        <h2 class="title">Maps I've Contributed To</h2>
-        <table class="table">
-          <tbody>
-            <% for (let userPin of userPins) { %>
-            <tr>
-              <td><%= userPin.title %></td>
-            </tr>
-            <% } %>
-          </tbody>
-        </table>
-      <% } else { %>
-        <h2 class="title"><%= username %>'s Favourites</h2>
-        <table class="table">
-          <tbody>
-            <% for (let userFave of userFaves) { %>
-            <tr>
-              <td><%= userFave.title %></td>
-            </tr>
-            <% } %>
-          </tbody>
-        </table>
-        <h2 class="title"><%= username %>'s Maps</h2>
-        <table class="table">
-          <tbody>
-            <% for (let userMap of userMaps) { %>
-            <tr>
-              <td><%= userMap.title %></td>
-            </tr>
-            <% } %>
-          </tbody>
-        </table>
-        <h2 class="title">Maps <%= username %> Contributed To</h2>
-        <table class="table">
-          <tbody>
-            <% for (let userPin of userPins) { %>
-            <tr>
-              <td><%= userPin.title %></td>
-            </tr>
-            <% } %>
-          </tbody>
-        </table>
-      <% } %>
+  <main style="margin: 1em;">
+    <h2 class="title"><%= (ownerIsLoggedIn) ? 'My Faves' : username + "'s Faves" %></h2>
+    <table class="table">
+      <tbody>
+        <% for (let userFave of userFaves) { %>
+          <tr>
+            <td><%= userFave.title %></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <h2 class="title"><%= (ownerIsLoggedIn) ? 'My Maps' : username + "'s Maps" %></h2>
+    <table class="table">
+      <tbody>
+        <% for (let userMap of userMaps) { %>
+          <tr>
+            <td><%= userMap.title %></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <h2 class="title"><%= (ownerIsLoggedIn) ? 'My Contributions' : username + "'s Contributions" %></h2>
+      <table class="table">
+        <tbody>
+          <% for (let userPin of userPins) { %>
+          <tr>
+            <td><%= userPin.title %></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
     </main>
+
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
