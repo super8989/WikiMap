@@ -6,33 +6,31 @@ const router = express.Router();
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
-    // const pinsData = getAllPinsFromDb().then((result) => {
-    //   console.log(result[0]);
-    //   return result[0];
-    // });
-
     res.render("maps");
   });
 
   // Add a new pin to db
   router.post("/", (req, res) => {
     let queryString = `
-      INSERT INTO pins (title, description, lat, lng) VALUES ($1, $2, $3, $4) RETURNING *;
+      INSERT INTO pins (title, description, image_url, latitude, longitude, created_at) 
+      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
     `;
     // req.body = {} from the submit form for new pin
     let values = req.body;
-    let { title, description, lat, lng } = values;
+    let { title, description, image_url, latitude, longitude } = values;
 
-    console.log("values", values);
+    console.log("values from .post", values);
 
     db.query(queryString, [
       title,
       description,
-      parseFloat(lat),
-      parseFloat(lng),
+      image_url,
+      parseFloat(latitude),
+      parseFloat(longitude),
+      new Date(),
     ])
       .then((data) => {
-        console.log("data.rows", data.rows);
+        console.log("data.rows from post", data.rows);
         return data.rows;
       })
       .catch((err) => console.error("query error", err.stack));

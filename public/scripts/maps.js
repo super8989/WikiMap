@@ -1,5 +1,5 @@
 $(() => {
-  const mymap = L.map("mapid").setView([51.505, -0.09], 13);
+  const map = L.map("mapid").setView([43.65, -79.38], 13);
 
   // Add tileLayer to our map
   L.tileLayer(
@@ -9,38 +9,23 @@ $(() => {
       <a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a>
       <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>`,
     }
-  ).addTo(mymap);
+  ).addTo(map);
 
-  // Add a pin at [lat,long]
-  const marker = L.marker([51.5, -0.09]).addTo(mymap);
+  // Add a pin at [lat,long] > Initial = lighthouse labs
+  const marker = L.marker([43.64426, -79.40226]).addTo(map);
   //openPopup() only works for markers
-  marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-
-  // Add a circle at [lat,long]
-  /*   const circle = L.circle([51.508, -0.11], {
-    color: "red",
-    fillColor: "#f03",
-    fillOpacity: 0.5,
-    radius: 500,
-  }).addTo(mymap);
-  circle.bindPopup("I am a circle."); */
-
-  // Add a polygon at [lat,long]
-  /*   const polygon = L.polygon([
-    [51.509, -0.08],
-    [51.503, -0.06],
-    [51.51, -0.047],
-  ]).addTo(mymap);
-  polygon.bindPopup("I am a polygon."); */
+  marker.bindPopup("Lighthouse Labs").openPopup();
 
   // Render pins on the map from db
   const addPinsFromDb = (obj) => {
     // console.log("addPinsFromDb obj in maps.js", obj);
-    const marker = L.marker([obj.lat, obj.lng]).addTo(mymap).bindPopup(`
+    const marker = L.marker([obj.latitude, obj.longitude]).addTo(map)
+      .bindPopup(`
       <p>Place: ${obj.title}</p>
       <p>Description: ${obj.description}</p>
-      <p>Latitude: ${obj.lat}</p>
-      <p>Longitude: ${obj.lng}</p>
+      <p>Image url: ${obj.image_url}</p>
+      <p>Latitude: ${obj.latitude}</p>
+      <p>Longitude: ${obj.longitude}</p>
       <p>id: ${obj.id}</p>
       <form method="POST" action='/maps/${obj.id}/delete'>
         <button>Delete</button>
@@ -50,7 +35,7 @@ $(() => {
 
   // AJAX request to api/pins to get the pin data
   $.get("/api/pins", function (result) {
-    console.log("result.pins", result.pins);
+    console.log("result.pins from .get /api/pins", result.pins);
     result.pins.forEach((pinObj) => addPinsFromDb(pinObj));
   });
 
@@ -58,38 +43,16 @@ $(() => {
 
   //another example of AJAX: when i click this button, make an ajax request -- ajax = way to ask server for things
 
-  /*   // Standalone popup at the lat/long
-  const popup = L.popup()
-    .setLatLng([51.5, -0.09])
-    .setContent("I am a standalone popup.")
-    .openOn(mymap);
-
-  // Click event creates popup
-  const popup = L.popup();
-  function onMapClick(e) {
-    console.log(e.latlng);
-    popup
-      .setLatLng(e.latlng)
-      .setContent("You clicked the map at " + e.latlng.toString())
-      .openOn(mymap);
-  }
-  mymap.on("click", onMapClick); */
-
-  // function cancelForm {
-  //   console.log("clicked");
-  //   // document.querySelector("#map_container").   mymap.removeLayer(newMarker);
-  // }
-
   // Drop a new pin and submit a form > POST /pins
   function dropNewPin(e) {
-    console.log(e);
-    console.log(e.latlng);
+    console.log("e from dropNewPin", e);
+    console.log("e.latlng from dropNewPin", e.latlng);
 
     const newMarker = L.marker([e.latlng.lat, e.latlng.lng], {
       title: "appears on hover",
       draggable: true,
       riseOnHover: true,
-    }).addTo(mymap);
+    }).addTo(map);
 
     // Send POST to pins.js
     newMarker
@@ -97,12 +60,14 @@ $(() => {
         `
         <form method='POST' action="/maps">
           <label for="title">Place:</label><br>
-          <input type="text" id="title" name="title" value="Place"><br>
+          <input type="text" id="title" name="title" value="title"><br>
           <label for="description">Description:</label><br>
-          <input type="text" id="description" name="description" value="Description"><br><br>
+          <input type="text" id="description" name="description" value="description"><br><br>
+          <label for="image_url">Image:</label><br>
+          <input type="text" id="image_url" name="image_url" value="image url"><br><br>
           <button type="submit">Submit</button>
-          <input name="lat" type="hidden" value='${e.latlng.lat}'>
-          <input name="lng" type="hidden" value='${e.latlng.lng}'>
+          <input name="latitude" type="hidden" value='${e.latlng.lat}'>
+          <input name="longitude" type="hidden" value='${e.latlng.lng}'>
         </form>
         <form>
           <button type="submit">Cancel</button>
@@ -118,5 +83,5 @@ $(() => {
 
   // for creation date: let the server figure out creation date OR in sql use .now for creation date OR another hidden input data for creation date
 
-  mymap.on("click", dropNewPin);
+  map.on("click", dropNewPin);
 });
