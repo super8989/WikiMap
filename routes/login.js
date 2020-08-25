@@ -12,7 +12,7 @@ module.exports = (db) => {
     const userID = req.session.user_id;
     const username = req.session.username;
     if (!userID) {
-      res.render('login', {user: username});
+      res.render('login', {user: username, id: userID});
     } else {
       res.redirect('/maps');
     }

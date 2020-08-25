@@ -12,9 +12,9 @@ module.exports = (db) => {
     // });
     console.log(req.session);
     if (!req.session) {
-      res.render("maps", {user: null});
+      res.render("maps", {user: null, id: null});
     } else {
-      res.render("maps", {user: req.session.username});
+      res.render("maps", {user: req.session.username, id: req.session.user_id});
     }
   });
 

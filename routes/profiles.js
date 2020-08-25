@@ -40,6 +40,13 @@ module.exports = (db) => {
                 getUserPins(db, requestedUserId)
                   .then(userPins => {
                     templateVars.userPins = userPins;
+                    if (!req.session.user_id) {
+                      templateVars.user = null;
+                      templateVars.id = null;
+                    } else {
+                      templateVars.user = req.session.username;
+                      templateVars.id = req.session.user_id;
+                    }
                     res.render('profiles_show', templateVars);
                   });
               });
