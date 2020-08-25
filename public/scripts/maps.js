@@ -3,7 +3,7 @@ $(() => {
 
   // Add tileLayer to our map
   L.tileLayer(
-    "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=8XDAnrbH4UlK8LQKyTB9",
+    `https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=8XDAnrbH4UlK8LQKyTB9`,
     {
       attribution: `
       <a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a>
@@ -24,6 +24,7 @@ $(() => {
       <p>Place: ${obj.title}</p>
       <p>Description: ${obj.description}</p>
       <p>Image url: ${obj.image_url}</p>
+      <img style='width: 100%;' src='${obj.image_url}'>
       <p>Latitude: ${obj.latitude}</p>
       <p>Longitude: ${obj.longitude}</p>
       <p>id: ${obj.id}</p>
@@ -85,3 +86,7 @@ $(() => {
 
   map.on("click", dropNewPin);
 });
+
+// require("dotenv").config();
+// console.log("process.env", process.env);
+// const MAPTILER_KEY = process.env.MAPTILER_API_KEY;

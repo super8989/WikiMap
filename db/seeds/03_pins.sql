@@ -16,3 +16,6 @@ VALUES ('White Squirrel', 'Chill cafe', 'https://www.blogto.com/listings/cafes/u
 ('Levelup VR Arcade', 'VR games', 'https://levelupreality.ca/wp-content/uploads/2018/09/20180731_144436.jpg', '43.664418', '-79.378895', '2020-08-21', 3, 3),
 ('ZED*80 Arcade Bar', 'Video arcade and pub grub', 'https://www.instagram.com/p/B9r07uml_b6/', '43.664418', '-79.378895', '2020-08-21', 3, 3),
 ('Get well', 'description of pin', 'https://images.squarespace-cdn.com/content/v1/531752e6e4b05fcac6a76326/1405621832116-FQ97YQ5JS1E1A1I2DTYX/ke17ZwdGBToddI8pDm48kPTrHXgsMrSIMwe6YW3w1AZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0k5fwC0WRNFJBIXiBeNI5fKTrY37saURwPBw8fO2esROAxn-RKSrlQamlL27g22X2A/P1020272.JPG', '43.664418', '-79.378895', '2020-08-21', 3, 3);
+
+-- 3 pins for map: ('Vancouver Sightsee', 'Canada', 'Vancouver', '49.2827', '123.1207', '2020-08-21', 3);
+('Stanley Park', 'Park', 'https://www.vancouverdine.com/wp-content/uploads/2019/06/Location.png', '49.3043', '123.1443', '2020-08-24', 4, 3),
