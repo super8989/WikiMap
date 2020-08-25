@@ -59,18 +59,18 @@ $(() => {
       .bindPopup(
         `
         <form method='POST' action="/maps">
-          <label for="title">Title:</label><br>
-          <input id="title" name="title" class="form-control form-control-sm" type="text" placeholder="Title"><br>
+          <label for="title">Place:</label><br>
+          <input type="text" id="title" name="title" value="title"><br>
           <label for="description">Description:</label><br>
-          <input name="description" id="description" class="form-control form-control-sm" type="text" placeholder="Description"><br>
+          <input type="text" id="description" name="description" value="description"><br><br>
           <label for="image_url">Image:</label><br>
-          <input name="image_url" id="image_url" class="form-control form-control-sm" type="text" placeholder="Image URL"><br>
-          <button type="submit" class="btn btn-primary btn-sm">Create new pin!</button>
-
-          <input name="lat" type="hidden" value='${e.latlng.lat}'>
-          <input name="lng" type="hidden" value='${e.latlng.lng}'>
-
-          </input>
+          <input type="text" id="image_url" name="image_url" value="image url"><br><br>
+          <button type="submit">Submit</button>
+          <input name="latitude" type="hidden" value='${e.latlng.lat}'>
+          <input name="longitude" type="hidden" value='${e.latlng.lng}'>
+        </form>
+        <form>
+          <button type="submit">Cancel</button>
         </form>
         `
       )
