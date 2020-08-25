@@ -1,4 +1,4 @@
-// All routes for login and logout process are defined here.
+// Routes for login process are defined here.
 
 const express = require('express');
 const router  = express.Router();
@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 module.exports = (db) => {
 
   // GET /login if no user is logged in. If user is logged in, redirect to /maps.
-  router.get('/login', (req, res) => {
+  router.get('/', (req, res) => {
     const userID = req.session.user_id;
     if (!userID) {
       res.render('login');
@@ -18,7 +18,7 @@ module.exports = (db) => {
   });
 
   // POST to /login only if existing user with valid username, email and password. Checks if username and email have previously been registered via helper functions getUserByUsername and getUserByEmail in helpers.js file. If username, email, or password don't match, error message is shown - for privacy, message doesn't indicate which is incorrect. Once logged in, redirects to /maps (for now, can be changed to redirect to user's profile or create new map, etc. later.)
-  router.post('/login', (req, res) => {
+  router.post('/', (req, res) => {
     const user = {
       username: req.body.username,
       email: req.body.email,
@@ -50,19 +50,12 @@ module.exports = (db) => {
                 } else {
                   const userID = existingUser.id;
                   req.session.user_id = userID;
-                  res.cookie('username', existingUser.username);
                   res.redirect('/maps');
                 }
               });
           }
         });
     }
-  });
-
-  // POST to /logout and destroy session cookie.
-  router.post('/logout', (req, res) => {
-    req.session = null;
-    res.redirect('/maps');
   });
 
   return router;

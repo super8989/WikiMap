@@ -8,7 +8,7 @@ module.exports = (db) => {
 
   // GET /users/:username
   // If user is logged in, use helper function getUserByUsername to check if the user logged in is the owner of the profile being viewed in order to set view permissions in profiles_show.ejs file. If no user is logged in, or if the user logged in is NOT the same user as the profile being viewed, show public view of profile.
-  // router.get('/users/:username', (req, res) => {
+  // router.get('/:username', (req, res) => {
   //   const userID = req.session.user_id;
   //   const username = req.params.username;
   //   const templateVars = {};
@@ -23,7 +23,7 @@ module.exports = (db) => {
   // GET /users/:id
   // If user is logged in, use helper function getUserById to check if the user logged in is the owner of the profile being viewed in order to set view permissions in profiles_show.ejs file. If no user is logged in, of if the user logged in is NOT the same user as the profile being viewed, show public view of profile.
 
-  router.get('/users/:id', (req, res) => {
+  router.get('/:id', (req, res) => {
     const currentUser = req.session.user_id;
     const requestedUserId = req.params.id;
     const templateVars = {};
