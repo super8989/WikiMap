@@ -18,7 +18,7 @@ module.exports = (db) => {
     }
   });
 
-  // Add a new pin to db
+// Add a new pin to db
   router.post("/", (req, res) => {
     let queryString = `
       INSERT INTO pins (title, description, image_url, latitude, longitude, created_at)
@@ -50,7 +50,7 @@ module.exports = (db) => {
   // instead of res.redirect which refreshes the page, do res.json(data.rows[0]) to the popup with AJAX
   //return data.rows[0] send only the single object back to the client side (due to RETURNING *) -> addPinFromDb only with that single object
 
-  // Remove pins from maps.js
+   // Remove pins from maps.js
   router.post("/:id/delete", (req, res) => {
     console.log("id from maps.js delete:", req.params.id);
     let values = [req.params.id];
