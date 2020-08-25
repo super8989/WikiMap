@@ -7,7 +7,7 @@ const { getUserByUsername, getUserByEmail, addUser } = require('./helpers');
 module.exports = (db) => {
 
   // GET /register if no user is logged in. If user is logged in, redirect to /maps.
-  router.get('/register', (req, res) => {
+  router.get('/', (req, res) => {
     const userID = req.session.user_id;
     if (!userID) {
       res.render('register', {user: null});
@@ -17,7 +17,7 @@ module.exports = (db) => {
   });
 
   // POST to /register only if new user with valid username, email and password. Checks if username and email have previously been registered via helper functions getUserByUsername and getUserByEmail in helpers.js file. If registration successful, adds new user to database via helper function addUser in helpers.js file and redirects to /maps (for now, can be changed to redirect to user's profile or create new map, etc. later.)
-  router.post('/register', (req, res) => {
+  router.post('/', (req, res) => {
     const user = {
       username: req.body.username,
       email: req.body.email,
