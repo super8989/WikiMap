@@ -14,7 +14,7 @@
 
 <body>
   <main style="margin: 1em;">
-    <h2 class="title"><%= (ownerIsLoggedIn) ? 'My Faves' : username + "'s Faves" %></h2>
+    <h2 class="title"><%= (ownerIsLoggedIn) ? 'My Favourites' : username + "'s Faves" %></h2>
     <table class="table">
       <tbody>
         <% for (let userFave of userFaves) { %>
@@ -44,7 +44,26 @@
           <% } %>
         </tbody>
       </table>
-    </main>
+    <% if (ownerIsLoggedIn) { %>
+      <h2 class="title">Create New Map</h2>
+        <form class="form" action="/maps/new" method="POST">
+          <div class="form-group mb-2">
+            <label for="title">Title:</label>
+            <input type="text" name="title" placeholder="Enter map title" style="width: 300px"/>
+          </div>
+          <div class="form-group mb-2">
+            <label for="country">Country:</label>
+            <input type="text" name="country" placeholder="Enter country" style="width: 300px"/>
+          </div>
+          <div class="form-group mb-2">
+            <label for="city">City:</label>
+            <input type="text" name="city" placeholder="Enter city" style="width: 300px"/>
+          </div>
+            <button type="submit" class="btn btn-primary">Create Map</button>
+          </form>
+        </div>
+      <% } %>
+      </main>
 
   <!-- Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
