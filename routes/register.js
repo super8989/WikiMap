@@ -12,7 +12,7 @@ module.exports = (db) => {
     if (!userID) {
       res.render('register', {user: null});
     } else {
-      res.redirect('/maps', {user: null});
+      res.redirect('/maps');
     }
   });
 
@@ -44,7 +44,7 @@ module.exports = (db) => {
                   res.render('400', templateVars);
                 } else {
                   addUser(db, user);
-                  res.redirect('/maps', {user: null});
+                  res.redirect('/maps');
                 }
               });
           }

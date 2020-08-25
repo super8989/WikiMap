@@ -10,10 +10,11 @@ module.exports = (db) => {
   // GET /login if no user is logged in. If user is logged in, redirect to /maps.
   router.get('/login', (req, res) => {
     const userID = req.session.user_id;
+    const username = req.session.username;
     if (!userID) {
-      res.render('login', {user: null});
+      res.render('login', {user: username});
     } else {
-      res.redirect('/maps', {user: null});
+      res.redirect('/maps');
     }
   });
 
@@ -49,7 +50,10 @@ module.exports = (db) => {
                   res.render('403', templateVars);
                 } else {
                   const userID = existingUser.id;
+                  const username = existingUser.username;
                   req.session.user_id = userID;
+                  req.session.username = username;
+                  console.log(req.session);
                   res.redirect('/maps');
                 }
               });
@@ -61,7 +65,7 @@ module.exports = (db) => {
   // POST to /logout and destroy session cookie.
   router.post('/logout', (req, res) => {
     req.session = null;
-    res.redirect('/maps');
+    res.redirect('/');
   });
 
   return router;

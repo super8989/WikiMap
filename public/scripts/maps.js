@@ -1,5 +1,5 @@
 $(() => {
-  const mymap = L.map("mapid").setView([51.505, -0.09], 13);
+  const map = L.map("mapid").setView([43.65, -79.38], 13);
 
   // Add tileLayer to our map
   L.tileLayer(
@@ -9,71 +9,50 @@ $(() => {
       <a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a>
       <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>`,
     }
-  ).addTo(mymap);
+  ).addTo(map);
 
-  // Add a pin at [lat,long]
-  const marker = L.marker([51.5, -0.09]).addTo(mymap);
+  // Add a pin at [lat,long] > Initial = lighthouse labs
+  const marker = L.marker([43.64426, -79.40226]).addTo(map);
   //openPopup() only works for markers
-  marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-
-  // Add a circle at [lat,long]
-  /*   const circle = L.circle([51.508, -0.11], {
-    color: "red",
-    fillColor: "#f03",
-    fillOpacity: 0.5,
-    radius: 500,
-  }).addTo(mymap);
-  circle.bindPopup("I am a circle."); */
-
-  // Add a polygon at [lat,long]
-  /*   const polygon = L.polygon([
-    [51.509, -0.08],
-    [51.503, -0.06],
-    [51.51, -0.047],
-  ]).addTo(mymap);
-  polygon.bindPopup("I am a polygon."); */
+  marker.bindPopup("Lighthouse Labs").openPopup();
 
   // Render pins on the map from db
   const addPinsFromDb = (obj) => {
-    const marker = L.marker([obj.latitude, obj.longitude]).addTo(mymap);
+    // console.log("addPinsFromDb obj in maps.js", obj);
+    const marker = L.marker([obj.latitude, obj.longitude]).addTo(map)
+      .bindPopup(`
+      <p>Place: ${obj.title}</p>
+      <p>Description: ${obj.description}</p>
+      <p>Image url: ${obj.image_url}</p>
+      <p>Latitude: ${obj.latitude}</p>
+      <p>Longitude: ${obj.longitude}</p>
+      <p>id: ${obj.id}</p>
+      <form method="POST" action='/maps/${obj.id}/delete'>
+        <button>Delete</button>
+      </form>
+      `);
   };
 
   // AJAX request to api/pins to get the pin data
   $.get("/api/pins", function (result) {
-    console.log("result.pins", result.pins);
+    console.log("result.pins from .get /api/pins", result.pins);
     result.pins.forEach((pinObj) => addPinsFromDb(pinObj));
   });
 
+  //if not refreshing to get the pins, refer to Tweeter for the client side rendering
+
   //another example of AJAX: when i click this button, make an ajax request -- ajax = way to ask server for things
 
-  /*   // Standalone popup at the lat/long
-  const popup = L.popup()
-    .setLatLng([51.5, -0.09])
-    .setContent("I am a standalone popup.")
-    .openOn(mymap);
-
-  // Click event creates popup
-  const popup = L.popup();
-  function onMapClick(e) {
-    console.log(e.latlng);
-    popup
-      .setLatLng(e.latlng)
-      .setContent("You clicked the map at " + e.latlng.toString())
-      .openOn(mymap);
-  }
-  mymap.on("click", onMapClick); */
-
-  let newMarker;
   // Drop a new pin and submit a form > POST /pins
   function dropNewPin(e) {
-    console.log(e);
-    console.log(e.latlng);
+    console.log("e from dropNewPin", e);
+    console.log("e.latlng from dropNewPin", e.latlng);
 
-    newMarker = L.marker([e.latlng.lat, e.latlng.lng], {
+    const newMarker = L.marker([e.latlng.lat, e.latlng.lng], {
       title: "appears on hover",
       draggable: true,
       riseOnHover: true,
-    }).addTo(mymap);
+    }).addTo(map);
 
     // Send POST to pins.js
     newMarker
@@ -98,7 +77,11 @@ $(() => {
       .openPopup();
   }
 
+  // instead of a form, i could do an ajax post -> .then() gets the single object back from the server with res.json(data.rows[0]) because of RETURNING * -> call addPinFromDb() with the object returned --> so then the page would not be redirected and refreshed
+
+  // form without method defaults to get and gets the current page hence refreshes the page
+
   // for creation date: let the server figure out creation date OR in sql use .now for creation date OR another hidden input data for creation date
 
-  mymap.on("click", dropNewPin);
+  map.on("click", dropNewPin);
 });

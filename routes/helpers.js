@@ -24,6 +24,17 @@ const getUserByEmail = function(db, submittedEmail) {
     .then(res => res.rows[0]);
 };
 
+// getUserById helper function to get username with user's ID.
+
+const getUserById = function(db, submittedId) {
+  return db.query(`
+  SELECT *
+  FROM users
+  WHERE id = $1
+  `, [submittedId])
+    .then(res => res.rows[0]);
+};
+
 // addUser helper function to add new user to database if email and password are valid.
 
 const addUser = function(db, user) {
@@ -36,4 +47,39 @@ const addUser = function(db, user) {
     .then(res => res.rows[0]);
 };
 
-module.exports = { getUserByUsername, getUserByEmail, addUser };
+// getUserMaps helper function to retrieve title of maps owned by user.
+
+const getUserMaps = function(db, user) {
+  return db.query(`
+  SELECT title
+  FROM maps
+  WHERE maps.user_id = $1
+  `, [user])
+    .then(res => res.rows);
+};
+
+// getUserFaves helper function to retrieve title of maps favourited by user.
+
+const getUserFaves = function(db, user) {
+  return db.query(`
+  SELECT maps.title
+  FROM user_favourites
+  JOIN maps on user_favourites.map_id = maps.id
+  WHERE user_favourites.user_id = $1
+  `, [user])
+    .then(res => res.rows);
+};
+
+// getUserPins helper function to retrieve title of maps user has contributed pins to.
+
+const getUserPins = function(db, user) {
+  return db.query(`
+  SELECT DISTINCT maps.title
+  FROM pins
+  JOIN maps ON pins.map_id = maps.id
+  WHERE pins.user_id = $1
+  `, [user])
+    .then(res => res.rows);
+};
+
+module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins };
