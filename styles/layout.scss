@@ -11,3 +11,7 @@ body {
 #mapid {
   height: 80vh;
 }
+
+.leaflet-popup-content-wrapper {
+  word-wrap: break-word;
+}

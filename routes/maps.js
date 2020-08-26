@@ -5,10 +5,8 @@ const env = require("dotenv").config({ path: "./.env" });
 
 const MAPTILER_API_KEY = env.MAPTILER_API_KEY;
 const GEOCODING_API_KEY = env.GEOCODING_API_KEY;
-console.log("apikey", GEOCODING_API_KEY);
 
-// how can i use getAllPinsFromDb from the database.js inside router.get
-
+// 8080/maps
 module.exports = (db) => {
   router.get("/", (req, res) => {
     const templateVars = {
@@ -18,17 +16,36 @@ module.exports = (db) => {
     res.render("maps", templateVars);
   });
 
+  // Render a map based on map_id
+  router.get("/:map_id", (req, res) => {
+    const templateVars = {
+      mapTilerKey: MAPTILER_API_KEY,
+      geocodingKey: GEOCODING_API_KEY,
+    };
+    res.render("maps", templateVars);
+  });
+
+  // // Pins db based on map id
+  // router.get("/api/:map_id", (req, res) => {
+  //   let queryString = `SELECT * FROM pins WHERE map_id = $1`;
+
+  //   db.query(queryString, [req.params.map_id]).then((data) => {
+  //     res.json({ pins: data.rows });
+  //   });
+  //   // res.send("ok");
+  // });
+
   // Add a new pin to db
   router.post("/", (req, res) => {
     let queryString = `
-      INSERT INTO pins (title, description, image_url, latitude, longitude, created_at) 
-      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
+      INSERT INTO pins (title, description, image_url, latitude, longitude, created_at, map_id) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;
     `;
     // req.body = {} from the submit form for new pin
     let values = req.body;
-    let { title, description, image_url, latitude, longitude } = values;
+    let { title, description, image_url, latitude, longitude, map_id } = values;
 
-    console.log("values from .post", values);
+    console.log("values: maps.js", values);
 
     db.query(queryString, [
       title,
@@ -37,9 +54,10 @@ module.exports = (db) => {
       parseFloat(latitude),
       parseFloat(longitude),
       new Date(),
+      map_id,
     ])
       .then((data) => {
-        console.log("data.rows from post", data.rows);
+        // console.log("data.rows: maps.js", data.rows);
         return data.rows;
       })
       .catch((err) => console.error("query error", err.stack));

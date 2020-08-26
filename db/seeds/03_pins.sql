@@ -22,5 +22,5 @@ VALUES ('White Squirrel', 'Chill cafe', 'https://www.blogto.com/listings/cafes/u
 
 -- 3 pins for map: ('Vancouver Sightsee', 'Canada', 'Vancouver', '49.2827', '123.1207', '2020-08-21', 3);
 ('Stanley Park', 'Park', 'https://www.vancouverdine.com/wp-content/uploads/2019/06/Location.png', '49.3043', '123.1443', '2020-08-24', 4, 3),
-('Lighthouse Labs', 'The Best Place To Be', 'https://856887.smushcdn.com/1859345/wp-content/uploads/2018/05/lighthouse-labs-300x300.png?lossy=0&strip=1&webp=1', '49.280575', '-123.115219', '2020-07-20', 4, 3),
-('Sam Used to Live here', 'But having a baby ruined that oh so precious DT life', 'https://rentitfurnished.com/vancouver/wp-content/uploads/sites/2/2015/06/IMG_022.jpg', '49.283515', '-123.116563', '2020-07-20', 4, 3);
+('Lighthouse Labs', 'The Best Place To Be', 'https://856887.smushcdn.com/1859345/wp-content/uploads/2018/05/lighthouse-labs-300x300.png?lossy=0&strip=1&webp=1', '49.280575', '-123.115219', '2020-07-20', 4, 3);
+
