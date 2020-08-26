@@ -13,6 +13,6 @@ VALUES ('White Squirrel', 'Chill cafe', 'https://www.blogto.com/listings/cafes/u
 ('The Royal Canadian Yacht Club', 'Yachting, sport and tradition.', 'https://rcyc.ca/getmedia/6f9c0162-611d-4206-b94f-f60f4e03d69f/clubhouse-banner-about.aspx?width=1920&height=539&ext=.png', '43.62394', '-79.370554', '2020-03-22', 1, 1),
 
 -- 3 pins for map: ('Best arcades', 'Canada', 'Toronto', '43.6532', '-79.3832', '2020-08-21', 3);
-('Levelup VR Arcade', 'VR games', 'https://levelupreality.ca/wp-content/uploads/2018/09/20180731_144436.jpg', '43.664418', '-79.378895', '2020-08-21', 3, 3),
-('ZED*80 Arcade Bar', 'Video arcade and pub grub', 'https://www.instagram.com/p/B9r07uml_b6/', '43.664418', '-79.378895', '2020-08-21', 3, 3),
+('Levelup VR Arcade', 'VR games', 'https://levelupreality.ca/wp-content/uploads/2018/09/20180731_144436.jpg', '43.6522612', '-79.3756059', '2020-08-21', 3, 3),
+('ZED*80 Arcade Bar', 'Video arcade and pub grub', 'https://www.instagram.com/p/B9r07uml_b6/', '43.6765767', '-79.3563347', '2020-08-21', 3, 3),
 ('Get well', 'description of pin', 'https://images.squarespace-cdn.com/content/v1/531752e6e4b05fcac6a76326/1405621832116-FQ97YQ5JS1E1A1I2DTYX/ke17ZwdGBToddI8pDm48kPTrHXgsMrSIMwe6YW3w1AZ7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0k5fwC0WRNFJBIXiBeNI5fKTrY37saURwPBw8fO2esROAxn-RKSrlQamlL27g22X2A/P1020272.JPG', '43.664418', '-79.378895', '2020-08-21', 3, 3);

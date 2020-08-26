@@ -7,6 +7,7 @@
 
 const express = require("express");
 const router = express.Router();
+const { getPinsForMapById } = require("./helpers");
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -21,5 +22,17 @@ module.exports = (db) => {
         res.status(500).json({ error: err.message });
       });
   });
+
+  router.get("/:id", (req, res) => {
+    const requestedMapId = req.params.id;
+    getPinsForMapById(db, requestedMapId)
+      .then((pins) => {
+        res.json({ pins });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
   return router;
 };

@@ -82,4 +82,26 @@ const getUserPins = function(db, user) {
     .then(res => res.rows);
 };
 
-module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins };
+// getMapById helper function to retrieve name of map for specific map id.
+
+const getMapById = function(db, map) {
+  return db.query(`
+  SELECT *
+  FROM maps
+  WHERE id = $1
+  `, [map])
+    .then(res => res.rows);
+};
+
+// getPinsForMapById helper function to retrieve all pins for specific map id.
+
+const getPinsForMapById = function(db, map) {
+  return db.query(`
+  SELECT *
+  FROM pins
+  WHERE map_id = $1
+  `, [map])
+    .then(res => res.rows);
+};
+
+module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins, getMapById, getPinsForMapById };

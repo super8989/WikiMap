@@ -1,5 +1,6 @@
 const express = require("express");
 const { getAllPinsFromDb } = require("../database");
+const { getMapById } = require("./helpers");
 const router = express.Router();
 
 // how can i use getAllPinsFromDb from the database.js inside router.get
@@ -18,15 +19,32 @@ module.exports = (db) => {
     }
   });
 
+  // GET /maps/:id to view specific map based on map's id.
+  router.get("/:id", (req, res) => {
+    const mapID = req.params.id;
+    const templateVars = {};
+    if (!mapID) {
+      res.statusCode = 404; //create views/404.ejs
+      res.render('404');
+    }
+    const requestedMapId = mapID;
+    getMapById(db, requestedMapId)
+      .then(requestedMap => {
+        templateVars.requestedMap = requestedMap;
+        console.log(requestedMap);
+        res.render('maps_show', templateVars);
+      });
+  });
+
 // Add a new pin to db
   router.post("/", (req, res) => {
     let queryString = `
-      INSERT INTO pins (title, description, image_url, latitude, longitude, created_at)
-      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
+      INSERT INTO pins (title, description, image_url, latitude, longitude, created_at, map_id)
+      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;
     `;
     // req.body = {} from the submit form for new pin
     let values = req.body;
-    let { title, description, image_url, latitude, longitude } = values;
+    let { title, description, image_url, latitude, longitude, map_id } = values;
 
     console.log("values from .post", values);
 
@@ -37,6 +55,7 @@ module.exports = (db) => {
       parseFloat(latitude),
       parseFloat(longitude),
       new Date(),
+      map_id
     ])
       .then((data) => {
         console.log("data.rows from post", data.rows);
