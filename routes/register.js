@@ -26,6 +26,8 @@ module.exports = (db) => {
     const templateVars = {};
     if (user.username === '' || user.email === '' || user.password === '') {
       res.statusCode = 400;
+      templateVars.user = null;
+      templateVars.id = null;
       templateVars.message = 'Oops, you left the username, email and/or password field(s) blank. Please try again.';
       res.render('400', templateVars);
     } else {
@@ -33,6 +35,8 @@ module.exports = (db) => {
         .then(existingUser => {
           if (existingUser) {
             res.statusCode = 400;
+            templateVars.user = null;
+            templateVars.id = null;
             templateVars.message = 'Sorry, that username is already registered.';
             res.render('400', templateVars);
           } else {
@@ -40,11 +44,21 @@ module.exports = (db) => {
               .then(existingUser => {
                 if (existingUser) {
                   res.statusCode = 400;
+                  templateVars.user = null;
+                  templateVars.id = null;
                   templateVars.message = 'Sorry, that email is already registered.';
                   res.render('400', templateVars);
                 } else {
                   addUser(db, user);
-                  res.redirect('/maps');
+                  getUserByUsername(db, user.username)
+                    .then(existingUser => {
+                      const userID = existingUser.id;
+                      const username = existingUser.username;
+                      req.session.user_id = userID;
+                      req.session.username = username;
+                      console.log(req.session);
+                      res.redirect('/maps');
+                    });
                 }
               });
           }

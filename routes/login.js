@@ -28,6 +28,8 @@ module.exports = (db) => {
     const templateVars = {};
     if (user.username === '' || user.email === '' || user.password === '') {
       res.statusCode = 400;
+      templateVars.user = null;
+      templateVars.id = null;
       templateVars.message = 'Oops, you left the username, email and/or password field(s) blank. Please try again.';
       res.render('400', templateVars);
     } else {
@@ -35,6 +37,8 @@ module.exports = (db) => {
         .then(existingUser => {
           if (!existingUser) {
             res.statusCode = 403;
+            templateVars.user = null;
+            templateVars.id = null;
             templateVars.message = 'Incorrect username, email and/or password.';
             res.render('403', templateVars);
           } else {
@@ -43,10 +47,14 @@ module.exports = (db) => {
                 if (!existingUser) {
                   res.statusCode = 403;
                   templateVars.message = 'Incorrect username, email and/or password.';
+                  templateVars.user = null;
+                  templateVars.id = null;
                   res.render('403', templateVars);
                 } else if (!bcrypt.compareSync(user.password, existingUser.password)) {
                   res.statusCode = 403;
                   templateVars.message = 'Incorrect username, email and/or password.';
+                  templateVars.user = null;
+                  templateVars.id = null;
                   res.render('403', templateVars);
                 } else {
                   const userID = existingUser.id;
