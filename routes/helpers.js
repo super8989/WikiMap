@@ -104,4 +104,15 @@ const getPinsForMapById = function(db, map) {
     .then(res => res.rows);
 };
 
-module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins, getMapById, getPinsForMapById };
+// getAllMaps helper function to retrieve title and creator of all maps.
+
+const getAllMaps = function(db) {
+  return db.query(`
+  SELECT DISTINCT maps.title, maps.id, users.username
+  FROM maps
+  JOIN users on maps.user_id = users.id
+  `)
+    .then(res => res.rows);
+};
+
+module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins, getMapById, getPinsForMapById, getAllMaps };
