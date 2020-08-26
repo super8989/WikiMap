@@ -12,7 +12,7 @@ module.exports = (db) => {
     const userID = req.session.user_id;
     const username = req.session.username;
     if (!userID) {
-      res.render('login', {user: username, id: userID});
+      res.render('login', {user: username, id: userID, mapName: null});
     } else {
       res.redirect('/maps');
     }
@@ -30,6 +30,7 @@ module.exports = (db) => {
       res.statusCode = 400;
       templateVars.user = null;
       templateVars.id = null;
+      templateVars.mapName = null;
       templateVars.message = 'Oops, you left the username, email and/or password field(s) blank. Please try again.';
       res.render('400', templateVars);
     } else {
@@ -39,6 +40,7 @@ module.exports = (db) => {
             res.statusCode = 403;
             templateVars.user = null;
             templateVars.id = null;
+            templateVars.mapName = null;
             templateVars.message = 'Incorrect username, email and/or password.';
             res.render('403', templateVars);
           } else {
@@ -49,18 +51,21 @@ module.exports = (db) => {
                   templateVars.message = 'Incorrect username, email and/or password.';
                   templateVars.user = null;
                   templateVars.id = null;
+                  templateVars.mapName = null;
                   res.render('403', templateVars);
                 } else if (!bcrypt.compareSync(user.password, existingUser.password)) {
                   res.statusCode = 403;
                   templateVars.message = 'Incorrect username, email and/or password.';
                   templateVars.user = null;
                   templateVars.id = null;
+                  templateVars.mapName = null;
                   res.render('403', templateVars);
                 } else {
                   const userID = existingUser.id;
                   const username = existingUser.username;
                   req.session.user_id = userID;
                   req.session.username = username;
+                  templateVars.mapName = null;
                   console.log(req.session);
                   res.redirect('/maps');
                 }

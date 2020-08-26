@@ -68,7 +68,7 @@ app.get("/", (req, res) => {
   if (req.session.username) {
     res.redirect("maps");
   } else {
-    res.render("index", {user : null});
+    res.render("index", {user : null, mapName: null});
   }
 });
 
