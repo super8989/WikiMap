@@ -25,12 +25,26 @@ module.exports = (db) => {
     const templateVars = {};
     if (!mapID) {
       res.statusCode = 404; //create views/404.ejs
-      res.render('404');
+      if (!req.session.user_id) {
+        templateVars.user = null;
+        templateVars.id = null;
+      } else {
+        templateVars.user = req.session.username;
+        templateVars.id = req.session.user_id;
+      }
+      res.render('404', templateVars);
     }
     const requestedMapId = mapID;
     getMapById(db, requestedMapId)
       .then(requestedMap => {
         templateVars.requestedMap = requestedMap;
+        if (!req.session) {
+          templateVars.user = null;
+          templateVars.id = null;
+        } else {
+          templateVars.user = req.session.username;
+          templateVars.id = req.session.user_id;
+        }
         console.log(requestedMap);
         res.render('maps_show', templateVars);
       });
