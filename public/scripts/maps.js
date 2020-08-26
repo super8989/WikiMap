@@ -2,13 +2,25 @@
 //on the front end, event listenenr listens to the click  // same cycle as Tweeter the tweet post cycle
 
 $(document).ready(function () {
-  $.get(
-    `http://open.mapquestapi.com/geocoding/v1/address?key=${geocodingKey}&location=Toronto,ON`,
-    function (data, status) {
-      // console.log("latLng", data.results[0].locations[0].latLng);
-      newMap(data);
-    }
-  ).catch((err) => console.error("error", err.stack));
+  // $.get(
+  //   `http://open.mapquestapi.com/geocoding/v1/address?key=${geocodingKey}&location=Toronto,ON`,
+  //   function (data, status) {
+  //     // console.log("latLng", data.results[0].locations[0].latLng);
+  //     newMap(data);
+  //   }
+  // ).catch((err) => console.error("error", err.stack));
+
+  // AJAX GET to mapquestapi to get the geocoords of a location
+  $.ajax({
+    url: `http://open.mapquestapi.com/geocoding/v1/address?key=${geocodingKey}&location=Toronto,ON`,
+    method: "GET",
+  })
+    .then((response) => {
+      const { latLng } = response.results[0].locations[0].latLng;
+      console.log("latLng", latLng);
+      newMap(response);
+    })
+    .catch((err) => console.error("error", err.stack));
 
   // Create a new map
   const newMap = (geoCoordinates) => {
@@ -58,17 +70,28 @@ $(document).ready(function () {
       <p>Latitude: ${obj.latitude}</p>
       <p>Longitude: ${obj.longitude}</p>
       <p>id: ${obj.id}</p>
+      <p>map_id: ${obj.map_id}</p>
+      <p>user_id: ${obj.user_id}</p>
       <form method="POST" action='/maps/${obj.id}/delete'>
         <button>Delete</button>
       </form>
       `);
     };
 
+    // $.get("/api/pins", function (result) {
+    //   // console.log("result.pins from .get /api/pins", result.pins);
+    //   result.pins.forEach((pinObj) => addPinsFromDb(pinObj));
+    // });
+
     // AJAX request to api/pins to get the pin data
-    $.get("/api/pins", function (result) {
-      // console.log("result.pins from .get /api/pins", result.pins);
-      result.pins.forEach((pinObj) => addPinsFromDb(pinObj));
-    });
+    $.ajax({
+      url: "/api/pins",
+      method: "GET",
+    })
+      .then((response) => {
+        response.pins.forEach((pinObj) => addPinsFromDb(pinObj));
+      })
+      .catch((err) => console.err(err.stack));
 
     //if not refreshing to get the pins, refer to Tweeter for the client side rendering
 
@@ -120,9 +143,3 @@ $(document).ready(function () {
   // Create new map
   // newMap();
 });
-
-// question about the jquery and how it's creating the dom... so at the beginning of this i am creating the dom before creating the map onto the mapid div..?
-
-// also how can i make this whole thing a function so that i can call this to create a new map through calling the function?
-
-// Where should i use the AJAX call to make a get request to Mapquest to input lat and lng into the function newMap
