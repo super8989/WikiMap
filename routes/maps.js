@@ -113,13 +113,36 @@ module.exports = (db) => {
     }
   });
 
+  // GET /maps/:id/edit page to edit map title.
+
+  router.get("/:id/edit", (req, res) => {
+    const templateVars = {};
+    if (!req.session.user_id) {
+      templateVars.user = null;
+      templateVars.id = null;
+      templateVars.mapName = null;
+      res.statusCode = 401;
+      res.render('401', templateVars);
+    } else {
+      const requestedMapId = req.params.id;
+      getMapById(db, requestedMapId)
+        .then(requestedMap => {
+          templateVars.mapName = requestedMap.title;
+          templateVars.mapID = req.params.id;
+          templateVars.user = req.session.username;
+          templateVars.id = req.session.user_id;
+          res.render('maps_edit', templateVars);
+        });
+    }
+  });
+
   // Update a map as owner of map only, then redirect back to user's profile.
 
   router.post("/:id", (req, res) => {
     const userID = req.session.user_id;
     const requestedMapId = req.params.id;
     const mapDetails = {
-      title: req.body.title
+      title: req.body.newTitle
     };
     updateMap(db, requestedMapId, mapDetails)
       .then(() => {

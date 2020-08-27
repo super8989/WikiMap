@@ -148,7 +148,7 @@ const getAllMaps = function(db) {
 const updateMap = function(db, mapID, mapDetails) {
   return db.query(`
   UPDATE maps
-  SET title = $1,
+  SET title = $1
   WHERE id = $2
   `, [mapDetails.title, mapID])
     .then(res => res.rows);
