@@ -1,6 +1,6 @@
 const express = require("express");
 const { getAllPinsFromDb } = require("../database");
-const { getMapById, getAllMaps, getCoordinates, createNewMap, deleteMap } = require("./helpers");
+const { getMapById, getAllMaps, getCoordinates, createNewMap, updateMap, deleteMap } = require("./helpers");
 const router = express.Router();
 
 // how can i use getAllPinsFromDb from the database.js inside router.get
@@ -111,6 +111,23 @@ module.exports = (db) => {
             });
         });
     }
+  });
+
+  // Update a map as owner of map only, then redirect back to user's profile.
+
+  router.post("/:id", (req, res) => {
+    const userID = req.session.user_id;
+    const requestedMapId = req.params.id;
+    const mapDetails = {
+      title: req.body.title
+    };
+    updateMap(db, requestedMapId, mapDetails)
+      .then(() => {
+        res.redirect(`/users/${userID}`);
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
   });
 
   // Delete a map as owner of map only from user's own profile, then refresh page. Does not delete from db, rather changes 'removed_at' from NULL to Date.

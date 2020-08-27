@@ -143,6 +143,17 @@ const getAllMaps = function(db) {
     .then(res => res.rows);
 };
 
+// updateMap helper function to update title of user's own map.
+
+const updateMap = function(db, mapID, mapDetails) {
+  return db.query(`
+  UPDATE maps
+  SET title = $1,
+  WHERE id = $2
+  `, [mapDetails.title, mapID])
+    .then(res => res.rows);
+};
+
 // deleteMap helper function to delete user's own map (does not remove from db, rather changes 'removed_at' from NULL to Date stamp.).
 
 const deleteMap = function(db, mapID) {
@@ -154,6 +165,8 @@ const deleteMap = function(db, mapID) {
     .then(res => res.rows);
 };
 
+// updatePin helper function to update title and/or description of pin.
+
 const updatePin = function(db, pinID, pinDetails) {
   return db.query(`
   UPDATE pins
@@ -164,4 +177,4 @@ const updatePin = function(db, pinID, pinDetails) {
     .then(res => res.rows);
 };
 
-module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins, getMapById, getPinsForMapById, getCoordinates, createNewMap, getAllMaps, deleteMap, updatePin };
+module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins, getMapById, getPinsForMapById, getCoordinates, createNewMap, getAllMaps, updateMap, deleteMap, updatePin };
