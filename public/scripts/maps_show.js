@@ -3,7 +3,11 @@ $(() => {
 
   // Add tileLayer to our map
   L.tileLayer(
+<<<<<<< HEAD
     `https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=rIGAtgd1JPJDWIhCRmru`,
+=======
+    'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=rIGAtgd1JPJDWIhCRmru',
+>>>>>>> 92f63f2cfb594f920cb8d0bdfc6cff1beaddd9cf
     {
       attribution: `
       <a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a>

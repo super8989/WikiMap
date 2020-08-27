@@ -1,6 +1,6 @@
 const express = require("express");
 const { getAllPinsFromDb } = require("../database");
-const { getMapById, getAllMaps, getCoordinates, createNewMap } = require("./helpers");
+const { getMapById, getAllMaps, getCoordinates, createNewMap, deleteMap } = require("./helpers");
 const router = express.Router();
 
 // how can i use getAllPinsFromDb from the database.js inside router.get
@@ -59,6 +59,11 @@ module.exports = (db) => {
         }
         templateVars.mapName = requestedMap.title;
         res.render('maps_show', templateVars);
+      })
+      .catch((err) => {
+        res.statusCode = 404;
+        templateVars.mapName = null;
+        res.render('404', templateVars);
       });
   });
 
@@ -68,6 +73,7 @@ module.exports = (db) => {
     if (!req.session.user_id) {
       templateVars.user = null;
       templateVars.id = null;
+      templateVars.mapName = null;
       res.statusCode = 401;
       res.render('401', templateVars);
     } else {
@@ -99,6 +105,7 @@ module.exports = (db) => {
             .catch((err) => {
               console.log("query error", err.stack);
               res.statusCode = 400;
+              templateVars.mapName = null;
               templateVars.message = "Oops, something went wrong.";
               res.render('400', templateVars);
             });
@@ -106,12 +113,41 @@ module.exports = (db) => {
     }
   });
 
+  // Delete a map as owner of map only from user's own profile, then refresh page. Does not delete from db, rather changes 'removed_at' from NULL to Date.
+  router.post("/:id/delete", (req, res) => {
+    const templateVars = {};
+    if (!req.session.user_id) {
+      templateVars.user = null;
+      templateVars.id = null;
+      templateVars.mapName = null;
+      res.statusCode = 401;
+      res.render('401', templateVars);
+    } else {
+      const mapID = req.params.id;
+      const userID = req.session.user_id;
+      deleteMap(db, mapID)
+        .then(dbres => {
+          res.redirect(`/users/${userID}`);
+        })
+        .catch((err) => {
+          console.log("query error", err.stack);
+          res.statusCode = 400;
+          templateVars.message = "Oops, something went wrong.";
+          templateVars.mapName = null;
+          res.render('400', templateVars);
+        });
+    }
+  });
+
+
+
 // Add a new pin to db
   router.post("/:id/pins", (req, res) => {
     const templateVars = {};
     if (!req.session.user_id) {
       templateVars.user = null;
       templateVars.id = null;
+      templateVars.mapName = null;
       res.statusCode = 401;
       res.render('401', templateVars);
     } else {
@@ -159,6 +195,7 @@ module.exports = (db) => {
     if (!req.session.user_id) {
       templateVars.user = null;
       templateVars.id = null;
+      templateVars.mapName = null;
       res.statusCode = 401;
       res.render('401', templateVars);
     } else {
