@@ -57,7 +57,7 @@ module.exports = (db) => {
           templateVars.user = req.session.username;
           templateVars.id = req.session.user_id;
         }
-        templateVars.mapName = requestedMap[0].title;
+        templateVars.mapName = requestedMap.title;
         res.render('maps_show', templateVars);
       });
   });
