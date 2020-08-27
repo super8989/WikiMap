@@ -35,7 +35,7 @@ const mapSix = L.map('mapid6', {
 }).setView([40, -4], 6);
 
 // Add a tile layer to the map (Mapbox Streets tile layer)
-const mapboxUrl = 'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=rIGAtgd1JPJDWIhCRmru';
+const mapboxUrl = 'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=tQiLWYMKVirRPxy8yyZn';
 const mapboxAttribution = '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
 
 

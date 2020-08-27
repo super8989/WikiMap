@@ -154,4 +154,15 @@ const deleteMap = function(db, mapID) {
     .then(res => res.rows);
 };
 
-module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins, getMapById, getPinsForMapById, getCoordinates, createNewMap, getAllMaps, deleteMap };
+const updatePin = function(db, pinID, pinDetails) {
+  return db.query(`
+  UPDATE pins
+  SET title = $1
+  AND description = $2
+  WHERE pins.map_id = $3
+  RETURNING *
+  `, [pinDetails.title, pinDetails.description], pinID)
+    .then(res => res.rows);
+};
+
+module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins, getMapById, getPinsForMapById, getCoordinates, createNewMap, getAllMaps, deleteMap, updatePin };
