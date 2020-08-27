@@ -29,6 +29,7 @@
       <thead>
         <th scope="col">Title</th>
         <th scope="col"></th>
+        <th scope="col"></th>
       </thead>
       <tbody>
         <% for (let userFave of userFaves) { %>
@@ -57,6 +58,11 @@
             </td>
             <td>
               <a class="btn btn-primary my-2 my-sm-0" href=<%= `/maps/${userMap.id}` %>>Visit</a>
+            </td>
+            <td>
+              <form method="POST" action=<%=`/maps/${userMap.id}/delete`%>>
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
             </td>
           </tr>
           <% } %>

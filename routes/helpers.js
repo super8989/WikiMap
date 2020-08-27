@@ -4,6 +4,7 @@ const saltRounds = 10;
 const env = require("dotenv").config({ path: "./.env" });
 const GEOCODING_API_KEY = env.GEOCODING_API_KEY;
 const requestPromise = require('request-promise-native');
+const nodeSassMiddleware = require('node-sass-middleware');
 
 // getUserByUsername helper function to check if username already registered.
 
@@ -57,6 +58,7 @@ const getUserMaps = function(db, user) {
   SELECT title, id
   FROM maps
   WHERE maps.user_id = $1
+  AND maps.removed_at IS NULL
   `, [user])
     .then(res => res.rows);
 };
@@ -82,6 +84,7 @@ const getUserPins = function(db, user) {
   FROM pins
   JOIN maps ON pins.map_id = maps.id
   WHERE pins.user_id = $1
+  AND pins.removed_at IS NULL
   `, [user])
     .then(res => res.rows);
 };
@@ -93,6 +96,7 @@ const getMapById = function(db, map) {
   SELECT *
   FROM maps
   WHERE id = $1
+  AND maps.removed_at IS NULL
   `, [map])
     .then(res => res.rows[0]);
 };
@@ -104,6 +108,7 @@ const getPinsForMapById = function(db, map) {
   SELECT *
   FROM pins
   WHERE map_id = $1
+  AND pins.removed_at IS NULL
   `, [map])
     .then(res => res.rows);
 };
@@ -132,8 +137,20 @@ const getAllMaps = function(db) {
   SELECT DISTINCT maps.title, maps.id, users.username
   FROM maps
   JOIN users on maps.user_id = users.id
+  WHERE maps.removed_at IS NULL
   `)
     .then(res => res.rows);
 };
 
-module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins, getMapById, getPinsForMapById, getCoordinates, createNewMap, getAllMaps };
+// deleteMap helper function to delete user's own map (does not remove from db, rather changes 'removed_at' from NULL to Date stamp.).
+
+const deleteMap = function(db, mapID) {
+  return db.query(`
+  UPDATE maps
+  SET removed_at = now()::date
+  WHERE maps.id = $1
+  `, [mapID])
+    .then(res => res.rows);
+};
+
+module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins, getMapById, getPinsForMapById, getCoordinates, createNewMap, getAllMaps, deleteMap };
