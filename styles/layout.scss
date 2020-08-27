@@ -14,10 +14,6 @@ body {
 	--jumbotron-padding-y: 3.5rem;
 }
 
-.navbar {
-	background-color: #DE795B;
-}
-
 .leaflet-popup-content {
   width: 15rem;
   p {
@@ -130,6 +126,12 @@ footer {
 	p {
 		margin-bottom: .25rem;
 	}
+}
+
+nav {
+  span {
+    padding-right: 0.5rem;
+  }
 }
 
 .bd-placeholder-img {

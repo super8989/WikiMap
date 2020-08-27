@@ -10,7 +10,7 @@ module.exports = (db) => {
   router.get('/', (req, res) => {
     const userID = req.session.user_id;
     if (!userID) {
-      res.render('register', {user: null});
+      res.render('register', {user: null, mapName: null});
     } else {
       res.redirect('/maps');
     }
@@ -28,6 +28,7 @@ module.exports = (db) => {
       res.statusCode = 400;
       templateVars.user = null;
       templateVars.id = null;
+      templateVars.mapName = null;
       templateVars.message = 'Oops, you left the username, email and/or password field(s) blank. Please try again.';
       res.render('400', templateVars);
     } else {
@@ -37,6 +38,7 @@ module.exports = (db) => {
             res.statusCode = 400;
             templateVars.user = null;
             templateVars.id = null;
+            templateVars.mapName = null;
             templateVars.message = 'Sorry, that username is already registered.';
             res.render('400', templateVars);
           } else {
@@ -46,6 +48,7 @@ module.exports = (db) => {
                   res.statusCode = 400;
                   templateVars.user = null;
                   templateVars.id = null;
+                  templateVars.mapName = null;
                   templateVars.message = 'Sorry, that email is already registered.';
                   res.render('400', templateVars);
                 } else {

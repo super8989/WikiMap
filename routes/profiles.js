@@ -46,6 +46,7 @@ module.exports = (db) => {
                     } else {
                       templateVars.user = req.session.username;
                       templateVars.id = req.session.user_id;
+                      templateVars.mapName = null;
                     }
                     res.render('profiles_show', templateVars);
                   });

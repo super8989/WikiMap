@@ -18,11 +18,13 @@ module.exports = (db) => {
       templateVars.id = null;
     } else {
       templateVars.user = req.session.username;
-      templateVars.id = req.session.id;
+      templateVars.id = req.session.user_id;
     }
     getAllMaps(db)
       .then(allMaps => {
         templateVars.allMaps = allMaps;
+        templateVars.mapName = null;
+        console.log(templateVars)
         res.render('maps_index', templateVars);
       });
   });
@@ -36,9 +38,11 @@ module.exports = (db) => {
       if (!req.session.user_id) {
         templateVars.user = null;
         templateVars.id = null;
+        templateVars.mapName = null;
       } else {
         templateVars.user = req.session.username;
         templateVars.id = req.session.user_id;
+        templateVars.mapName = null;
       }
       res.render('404', templateVars);
     }
@@ -53,7 +57,7 @@ module.exports = (db) => {
           templateVars.user = req.session.username;
           templateVars.id = req.session.user_id;
         }
-        console.log(requestedMap);
+        templateVars.mapName = requestedMap[0].title;
         res.render('maps_show', templateVars);
       });
   });
