@@ -27,6 +27,16 @@ module.exports = (db) => {
     const requestedMapId = req.params.id;
     getPinsForMapById(db, requestedMapId)
       .then((pins) => {
+        for (pin in pins) {
+          const userID = req.session.user_id;
+          console.log(userID);
+          if (userID) {
+            pins[pin].logUser = userID;
+          } else {
+            pins[pin].logUser = null;
+          }
+        }
+        console.log(pins);
         res.json({ pins });
       })
       .catch((err) => {

@@ -2,10 +2,10 @@ $(document).ready(() => {
   const pageURL = $(location).attr("href");
   const splitPageURL = pageURL.split('/');
   const mapID = splitPageURL[splitPageURL.length - 1];
-  console.log(mapID);
+  // console.log(mapID);
 
   $.get(`/favourites/${mapID}`, function(data) {
-    console.log(data);
+    // console.log(data);
     if (data) {
       $("i").toggle();
     }
@@ -16,7 +16,7 @@ $(document).ready(() => {
     const pageURL = $(location).attr("href");
     const splitPageURL = pageURL.split('/');
     const mapID = splitPageURL[splitPageURL.length - 1];
-    console.log(mapID);
+    // console.log(mapID);
 
     $.post(`/favourites/${mapID}/delete`, function() {
       $("i").toggle();
@@ -29,7 +29,7 @@ $(document).ready(() => {
     const pageURL = $(location).attr("href");
     const splitPageURL = pageURL.split('/');
     const mapID = splitPageURL[splitPageURL.length - 1];
-    console.log(mapID);
+    // console.log(mapID);
 
     $.post(`/favourites/${mapID}`, function() {
       $("i").toggle();
@@ -37,10 +37,3 @@ $(document).ready(() => {
   });
 
 });
-// $( "#fav-inactive" ).click(() => {
-//   console.log('user: ' user, ' id: ', id);
-// });
-
-// $( "" ).click(() => {
-//   console.log('user: ' user, ' id: ', id);
-// });

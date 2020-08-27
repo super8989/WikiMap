@@ -3,7 +3,7 @@ $(() => {
 
   // Add tileLayer to our map
   L.tileLayer(
-    `https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=8XDAnrbH4UlK8LQKyTB9`,
+    `https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=rIGAtgd1JPJDWIhCRmru`,
     {
       attribution: `
       <a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a>
@@ -14,7 +14,16 @@ $(() => {
   // Render pins on the map from db
   const addPinsFromDb = (obj) => {
     // console.log("addPinsFromDb obj in maps.js", obj);
-    const marker = L.marker([obj.latitude, obj.longitude]).addTo(map)
+    console.log(obj);
+    // console.log(obj.map_id);
+    console.log(obj.user_id);
+    console.log(obj.logUser);
+
+    const pinOwner = obj.user_id;
+    const logUser = obj.logUser;
+
+    if (pinOwner === logUser) {
+      const marker = L.marker([obj.latitude, obj.longitude]).addTo(map)
       .bindPopup(`
       <p>Place: ${obj.title}</p>
       <p>Description: ${obj.description}</p>
@@ -24,8 +33,16 @@ $(() => {
         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
       </form>
       `);
+    } else {
+      const marker = L.marker([obj.latitude, obj.longitude]).addTo(map)
+      .bindPopup(`
+      <p>Place: ${obj.title}</p>
+      <p>Description: ${obj.description}</p>
+      <img src="${obj.image_url}" alt="Pin image" class="img-thumbnail showImg">
+      <p>Created by: ${obj.id}</p>
+      `);
+    }
 
-      console.log(obj);
   };
 
   // AJAX request to api/pins/:id to get the pin data for specific map id.
