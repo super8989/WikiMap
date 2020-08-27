@@ -7,7 +7,7 @@
 
 const express = require("express");
 const router = express.Router();
-const { getPinsForMapById } = require("./helpers");
+const { getPinsForMapById, updatePin } = require("./helpers");
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -38,6 +38,21 @@ module.exports = (db) => {
         }
         console.log(pins);
         res.json({ pins });
+      })
+      .catch((err) => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+
+  router.put("/:id", (req, res) => {
+    const requestedPinId = req.params.id;
+    const pinDetails = {
+      title: req.params.title,
+      description: req.params.description
+    };
+    updatePin(db, requestedPinId, pinDetails)
+      .then((updatedPin) => {
+        res.json({ updatedPin });
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
