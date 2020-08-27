@@ -1,6 +1,6 @@
 const express = require("express");
 const { getAllPinsFromDb } = require("../database");
-const { getMapById, getAllMaps } = require("./helpers");
+const { getMapById, getAllMaps, getCoordinates, createNewMap } = require("./helpers");
 const router = express.Router();
 
 // how can i use getAllPinsFromDb from the database.js inside router.get
@@ -58,8 +58,52 @@ module.exports = (db) => {
       });
   });
 
-// Add a new pin to db
+  // Add a new map to db only if logged in, then redirect to new map.
   router.post("/", (req, res) => {
+    const templateVars = {};
+    if (!req.session.user_id) {
+      templateVars.user = null;
+      templateVars.id = null;
+      res.statusCode = 401;
+      res.render('401', templateVars);
+    } else {
+      templateVars.user = req.session.username;
+      templateVars.id = req.session.user_id;
+      const values = req.body;
+      const { title, country, city } = values;
+      getCoordinates(country, city)
+        .then(coordinates => {
+          const parsedCoords = JSON.parse(coordinates);
+          const resultsArray = parsedCoords.results[0];
+          const resultsCoords = resultsArray.locations[0];
+          const latitude = resultsCoords.latLng.lat;
+          const longitude = resultsCoords.latLng.lng;
+          const user_id = req.session.user_id;
+          const map = {
+            title,
+            country,
+            city,
+            latitude,
+            longitude,
+            created_at: new Date(),
+            user_id
+          };
+          createNewMap(db, map)
+            .then(newMap => {
+              res.redirect(`/maps/${newMap.id}`);
+            })
+            .catch((err) => {
+              console.log("query error", err.stack);
+              res.statusCode = 400;
+              templateVars.message = "Oops, something went wrong.";
+              res.render('400', templateVars);
+            });
+        });
+    }
+  });
+
+// Add a new pin to db
+  router.post("/:id/pins", (req, res) => {
     const templateVars = {};
     if (!req.session.user_id) {
       templateVars.user = null;
@@ -75,8 +119,9 @@ module.exports = (db) => {
       `;
       // req.body = {} from the submit form for new pin
       let user_id = req.session.user_id;
+      let map_id = req.params.id;
       let values = req.body;
-      let { title, description, image_url, latitude, longitude, map_id } = values;
+      let { title, description, image_url, latitude, longitude } = values;
 
       console.log("values from .post", values);
 
@@ -96,7 +141,7 @@ module.exports = (db) => {
         })
         .catch((err) => console.error("query error", err.stack));
       // console.log([values.title, values.description]);
-      res.redirect("/maps");
+      res.redirect(`/maps/${map_id}`);
     }
   });
 

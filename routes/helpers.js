@@ -1,6 +1,9 @@
 const bcrypt = require('bcrypt');
+const { request } = require('express');
 const saltRounds = 10;
-
+const env = require("dotenv").config({ path: "./.env" });
+const GEOCODING_API_KEY = env.GEOCODING_API_KEY;
+const requestPromise = require('request-promise-native');
 
 // getUserByUsername helper function to check if username already registered.
 
@@ -90,7 +93,7 @@ const getMapById = function(db, map) {
   FROM maps
   WHERE id = $1
   `, [map])
-    .then(res => res.rows);
+    .then(res => res.rows[0]);
 };
 
 // getPinsForMapById helper function to retrieve all pins for specific map id.
@@ -104,6 +107,23 @@ const getPinsForMapById = function(db, map) {
     .then(res => res.rows);
 };
 
+// getCoordinates helper function that makes an API request to get lat and long of country and city when user creates new map.
+
+const getCoordinates = function(country, city) {
+  return requestPromise(`https://www.mapquestapi.com/geocoding/v1/address?key=${GEOCODING_API_KEY}&inFormat=kvp&outFormat=json&location=${city}%2C+${country}`);
+};
+
+// createNewMap helper function to add new map to database.
+
+const createNewMap = function(db, map) {
+  return db.query(`
+  INSERT INTO maps (title, country, city, latitude, longitude, created_at, user_id)
+  VALUES ($1, $2, $3, $4, $5, $6, $7)
+  RETURNING *;
+  `, [map.title, map.country, map.city, map.latitude, map.longitude, map.created_at, map.user_id])
+    .then(res => res.rows[0]);
+};
+
 // getAllMaps helper function to retrieve title and creator of all maps.
 
 const getAllMaps = function(db) {
@@ -115,4 +135,4 @@ const getAllMaps = function(db) {
     .then(res => res.rows);
 };
 
-module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins, getMapById, getPinsForMapById, getAllMaps };
+module.exports = { getUserByUsername, getUserByEmail, getUserById, addUser, getUserMaps, getUserFaves, getUserPins, getMapById, getPinsForMapById, getCoordinates, createNewMap, getAllMaps };

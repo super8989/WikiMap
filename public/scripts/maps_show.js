@@ -1,5 +1,5 @@
 $(() => {
-  const map = L.map("mapid").setView([43.65, -79.38], 13);
+  const map = L.map("mapid").setView([mapLat, mapLng], 13);
 
   // Add tileLayer to our map
   L.tileLayer(
@@ -52,7 +52,7 @@ $(() => {
     newMarker
       .bindPopup(
         `
-        <form method='POST' action="/maps">
+        <form method='POST' action="/maps/${mapID}/pins">
           <label for="title">Place:</label><br>
           <input id="title" name="title" class="form-control form-control-sm" type="text" placeholder="Title"><br>
           <label for="description">Description:</label><br>
@@ -62,7 +62,6 @@ $(() => {
           <button type="submit" class="btn btn-primary btn-sm">Create new pin!</button>
           <input name="latitude" type="hidden" value='${e.latlng.lat}'>
           <input name="longitude" type="hidden" value='${e.latlng.lng}'>
-          <input name="map_id" type="hidden" value='${mapID}'>
         </form>
         <hr>
         <form>
