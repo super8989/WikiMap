@@ -127,6 +127,7 @@ module.exports = (db) => {
       const requestedMapId = req.params.id;
       getMapById(db, requestedMapId)
         .then(requestedMap => {
+          templateVars.ownerIsLoggedIn = req.session.user_id === requestedMap.user_id;
           templateVars.mapName = requestedMap.title;
           templateVars.mapID = req.params.id;
           templateVars.user = req.session.username;

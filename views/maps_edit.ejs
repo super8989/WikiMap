@@ -24,12 +24,16 @@
 <body>
   <%- include('partials/_header') %>
   <main class="container">
+  <% if (ownerIsLoggedIn) { %>
     <h2 class="title">You are editing: <%= mapName %></h2>
       <form method="POST" action=<%=`/maps/${mapID}`%> >
         New title:
       <input type="text" name="newTitle"/>
       <button type="submit" class="btn btn-primary">Submit</button>
       </form>
+  <% } else { %>
+    <p>You must be logged in and own this map to edit it!</p>
+  <% } %>
   </main>
       <%- include('partials/_footer') %>
 
