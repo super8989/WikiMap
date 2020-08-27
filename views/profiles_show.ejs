@@ -24,31 +24,12 @@
 <body>
   <%- include('partials/_header') %>
   <main class="container">
-    <h2 class="title"><%= (ownerIsLoggedIn) ? 'My Favourites' : username + "'s Favourites" %></h2><hr>
-    <table class="table table-borderless table-hover">
-      <thead>
-        <th scope="col">Title</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-      </thead>
-      <tbody>
-        <% for (let userFave of userFaves) { %>
-          <tr>
-            <td class="align-middle">
-              <%= userFave.title %>
-            </td>
-            <td>
-              <a class="btn btn-primary my-2 my-sm-0" href=<%= `/maps/${userFave.id}` %>>Visit</a>
-            </td>
-          </tr>
-          <% } %>
-        </tbody>
-      </table>
     <h2 class="title"><%= (ownerIsLoggedIn) ? 'My Maps' : username + "'s Maps" %></h2><hr>
     <table class="table table-borderless table-hover">
       <thead>
-        <th scope="col">Title</th>
-        <th scope="col"></th>
+        <th scope="col" class="col-4">Title</th>
+        <th scope="col" class="col-4"></th>
+        <th scope="col" class="col-4"></th>
       </thead>
       <tbody>
         <% for (let userMap of userMaps) { %>
@@ -59,20 +40,41 @@
             <td>
               <a class="btn btn-primary my-2 my-sm-0" href=<%= `/maps/${userMap.id}` %>>Visit</a>
             </td>
+            <% if (ownerIsLoggedIn) { %>
             <td>
               <form method="POST" action=<%=`/maps/${userMap.id}/delete`%>>
-                <button type="submit" class="btn btn-danger">Delete</button>
+                <button type="submit" class="btn btn-danger my-2 my-sm-0">Delete</button>
               </form>
             </td>
+          <% } %>
           </tr>
           <% } %>
         </tbody>
       </table>
+      <h2 class="title"><%= (ownerIsLoggedIn) ? 'My Favourites' : username + "'s Favourites" %></h2><hr>
+      <table class="table table-borderless table-hover">
+        <thead>
+          <th scope="col" class="col-6">Title</th>
+          <th scope="col" class="col-6"></th>
+        </thead>
+        <tbody>
+          <% for (let userFave of userFaves) { %>
+            <tr>
+              <td class="align-middle">
+                <%= userFave.title %>
+              </td>
+              <td>
+                <a class="btn btn-primary my-2 my-sm-0" href=<%= `/maps/${userFave.id}` %>>Visit</a>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
     <h2 class="title"><%= (ownerIsLoggedIn) ? 'My Contributions' : username + "'s Contributions" %></h2><hr>
       <table class="table table-borderless table-hover">
         <thead>
-          <th scope="col">Title</th>
-          <th scope="col"></th>
+          <th scope="col" class="col-6">Title</th>
+          <th scope="col" class="col-6"></th>
         </thead>
         <tbody>
           <% for (let userPin of userPins) { %>
