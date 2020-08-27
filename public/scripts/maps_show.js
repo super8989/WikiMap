@@ -14,10 +14,14 @@ $(() => {
   // Render pins on the map from db
   const addPinsFromDb = (obj) => {
 
+    // console.log(obj);
+    // console.log(obj.map_owner);
+
     const pinOwner = obj.user_id;
     const logUser = obj.logUser;
+    const mapOwner = obj.map_owner;
 
-    if (pinOwner === logUser) {
+    if (pinOwner === logUser || mapOwner === logUser) {
       const marker = L.marker([obj.latitude, obj.longitude]).addTo(map)
       .bindPopup(`
       <form method='POST' action="/api/pins/${obj.id}">

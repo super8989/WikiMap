@@ -106,10 +106,10 @@ const getMapById = function(db, map) {
 
 const getPinsForMapById = function(db, map) {
   return db.query(`
-  SELECT *
-  FROM pins
-  WHERE map_id = $1
-  AND pins.removed_at IS NULL
+  SELECT p.id AS id, p.title AS title, p.description AS description, p.image_url AS image_url, p.latitude AS latitude, p.longitude AS longitude, p.created_at AS created_at, p.removed_at AS removed_at, p.map_id AS map_id, p.user_id AS user_id, m.user_id AS map_owner FROM pins AS p
+  JOIN maps AS m on p.map_id = m.id
+  WHERE p.map_id = $1
+  AND p.removed_at IS NULL
   `, [map])
     .then(res => res.rows);
 };
