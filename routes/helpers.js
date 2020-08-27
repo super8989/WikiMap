@@ -72,6 +72,7 @@ const getUserFaves = function(db, user) {
   JOIN maps on user_favourites.map_id = maps.id
   WHERE user_favourites.user_id = $1
   AND user_favourites.removed_at IS NULL
+  AND maps.removed_at IS NULL
   `, [user])
     .then(res => res.rows);
 };
