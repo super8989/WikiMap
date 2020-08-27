@@ -13,11 +13,6 @@ $(() => {
 
   // Render pins on the map from db
   const addPinsFromDb = (obj) => {
-    // console.log("addPinsFromDb obj in maps.js", obj);
-    console.log(obj);
-    // console.log(obj.map_id);
-    console.log(obj.user_id);
-    console.log(obj.logUser);
 
     const pinOwner = obj.user_id;
     const logUser = obj.logUser;
@@ -25,13 +20,26 @@ $(() => {
     if (pinOwner === logUser) {
       const marker = L.marker([obj.latitude, obj.longitude]).addTo(map)
       .bindPopup(`
-      <p>Place: ${obj.title}</p>
-      <p>Description: ${obj.description}</p>
+      <form method='POST' action="/api/pins/${obj.id}">
+      <label for="title">Place:</label><br>
+      <input id="title" name="title" class="form-control form-control-sm" type="text" value="${obj.title}"><br>
+      <label for="description">Description:</label><br>
+      <input name="description" id="description" class="form-control form-control-sm" type="text" value="${obj.description}"><br>
+      <input name="map_id" type="hidden" value='${obj.map_id}'>
       <img src="${obj.image_url}" alt="Pin image" class="img-thumbnail showImg">
-      <p>Created by: ${obj.id}</p>
-      <form method="POST" action='/maps/${obj.id}/delete'>
-        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+      <div class="container">
+        <div class="row justify-content-md-center">
+          <div class="col">
+            <button type="submit" class="btn btn-primary btn-sm">Edit Pin</button>
+          </div>
       </form>
+          <div class="col">
+      <form method="POST" action='/maps/${obj.id}/delete'>
+          <button type="submit" class="btn btn-danger btn-sm">Delete Pin</button>
+          </div>
+      </form>
+        </div>
+      </div>
       `);
     } else {
       const marker = L.marker([obj.latitude, obj.longitude]).addTo(map)
@@ -39,7 +47,6 @@ $(() => {
       <p>Place: ${obj.title}</p>
       <p>Description: ${obj.description}</p>
       <img src="${obj.image_url}" alt="Pin image" class="img-thumbnail showImg">
-      <p>Created by: ${obj.id}</p>
       `);
     }
 

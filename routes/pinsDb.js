@@ -29,14 +29,14 @@ module.exports = (db) => {
       .then((pins) => {
         for (pin in pins) {
           const userID = req.session.user_id;
-          console.log(userID);
+          // console.log(userID);
           if (userID) {
             pins[pin].logUser = userID;
           } else {
             pins[pin].logUser = null;
           }
         }
-        console.log(pins);
+        // console.log(pins);
         res.json({ pins });
       })
       .catch((err) => {
@@ -44,15 +44,16 @@ module.exports = (db) => {
       });
   });
 
-  router.put("/:id", (req, res) => {
+  router.post("/:id", (req, res) => {
     const requestedPinId = req.params.id;
     const pinDetails = {
-      title: req.params.title,
-      description: req.params.description
+      title: req.body.title,
+      description: req.body.description,
+      mapID: req.body.map_id
     };
     updatePin(db, requestedPinId, pinDetails)
-      .then((updatedPin) => {
-        res.json({ updatedPin });
+      .then(() => {
+        res.redirect(`/maps/${pinDetails.mapID}`);
       })
       .catch((err) => {
         res.status(500).json({ error: err.message });
