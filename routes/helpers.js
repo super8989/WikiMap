@@ -86,6 +86,7 @@ const getUserPins = function(db, user) {
   JOIN maps ON pins.map_id = maps.id
   WHERE pins.user_id = $1
   AND pins.removed_at IS NULL
+  AND maps.removed_at IS NULL
   `, [user])
     .then(res => res.rows);
 };
