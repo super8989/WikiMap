@@ -60,7 +60,7 @@ module.exports = (db) => {
                       req.session.user_id = userID;
                       req.session.username = username;
                       console.log(req.session);
-                      res.redirect('/maps');
+                      res.redirect(`/users/${userID}`);
                     });
                 }
               });

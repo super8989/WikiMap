@@ -136,7 +136,7 @@ const createNewMap = function(db, map) {
 
 const getAllMaps = function(db) {
   return db.query(`
-  SELECT DISTINCT maps.title, maps.id, users.username
+  SELECT DISTINCT maps.title, maps.id, users.username, user_id
   FROM maps
   JOIN users on maps.user_id = users.id
   WHERE maps.removed_at IS NULL

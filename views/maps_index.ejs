@@ -38,7 +38,7 @@
               <%= map.title %>
             </td>
             <td class="align-middle">
-              <%= map.username %>
+              <a href=<%= `/users/${map.user_id}` %>><%= map.username %></a>
             </td>
             <td>
               <a class="btn btn-primary my-2 my-sm-0" href=<%= `/maps/${map.id}` %>>Visit</a>
