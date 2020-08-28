@@ -43,6 +43,7 @@ module.exports = (db) => {
                     if (!req.session.user_id) {
                       templateVars.user = null;
                       templateVars.id = null;
+                      templateVars.mapName = null;
                     } else {
                       templateVars.user = req.session.username;
                       templateVars.id = req.session.user_id;
