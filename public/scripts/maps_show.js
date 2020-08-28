@@ -38,7 +38,8 @@ $(() => {
           </div>
       </form>
           <div class="col">
-      <form method="POST" action='/maps/${obj.id}/delete'>
+      <form method="POST" action='/api/pins/${obj.id}/delete'>
+          <input name="map_id" type="hidden" value='${obj.map_id}'>
           <button type="submit" class="btn btn-danger btn-sm">Delete Pin</button>
           </div>
       </form>
