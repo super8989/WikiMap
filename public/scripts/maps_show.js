@@ -34,13 +34,13 @@ $(() => {
       <div class="container">
         <div class="row justify-content-md-center">
           <div class="col">
-            <button type="submit" class="btn btn-primary btn-sm">Edit Pin</button>
+            <button type="submit" class="btn btn-primary btn-sm">Update</button>
           </div>
       </form>
           <div class="col">
       <form method="POST" action='/api/pins/${obj.id}/delete'>
           <input name="map_id" type="hidden" value='${obj.map_id}'>
-          <button type="submit" class="btn btn-danger btn-sm">Delete Pin</button>
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
           </div>
       </form>
         </div>
