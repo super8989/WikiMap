@@ -25,13 +25,18 @@
   <%- include('partials/_header') %>
   <main class="container">
   <% if (ownerIsLoggedIn) { %>
-    <h2 class="title">You are editing: <%= mapName %></h2>
-      <form method="POST" action=<%=`/maps/${mapID}`%> >
-        New title:
-      <input type="text" name="newTitle"/>
-      <button type="submit" class="btn btn-primary">Submit</button>
+    <h2>You are editing: <%= mapEdit %></h2><hr>
+      <form class="form-inline" method="POST" action=<%=`/maps/${mapID}`%> >
+        <div class="form-group mb-2">
+          <label for="title">New Title:</label>
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+          <input class="form-control" type="text" name="newTitle" placeholder="Enter new map title">
+        </div>
+      <button type="submit" class="btn btn-primary mb-2">Submit</button>
       </form>
   <% } else { %>
+    <h2>401 - Unauthorized</h2>
     <p>You must be logged in and own this map to edit it!</p>
   <% } %>
   </main>
