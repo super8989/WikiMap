@@ -60,5 +60,33 @@ module.exports = (db) => {
       });
   });
 
+   // Remove pins from maps.js
+   router.post("/:id/delete", (req, res) => {
+    console.log("id from maps.js delete:", req.params.id);
+    console.log(req.body);
+    const mapID = req.body.map_id;
+    const templateVars = {};
+    if (!req.session.user_id) {
+      templateVars.user = null;
+      templateVars.id = null;
+      templateVars.mapName = null;
+      res.statusCode = 401;
+      res.render('401', templateVars);
+    } else {
+      templateVars.user = req.session.username;
+      templateVars.id = req.session.user_id;
+      let values = [req.params.id];
+      let queryString = `
+        DELETE FROM pins
+        WHERE id = $1;`;
+
+      db.query(queryString, values)
+        .then((data) => console.log(data))
+        .catch((err) => console.lerror("query error", err.stack));
+
+      res.redirect(`/maps/${mapID}`);
+    }
+  });
+
   return router;
 };
