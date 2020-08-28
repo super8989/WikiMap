@@ -24,7 +24,7 @@ module.exports = (db) => {
       .then(allMaps => {
         templateVars.allMaps = allMaps;
         templateVars.mapName = null;
-        console.log(templateVars)
+        console.log(templateVars);
         res.render('maps_index', templateVars);
       });
   });

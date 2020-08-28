@@ -136,7 +136,7 @@ const createNewMap = function(db, map) {
 
 const getAllMaps = function(db) {
   return db.query(`
-  SELECT DISTINCT maps.title, maps.id, users.username
+  SELECT DISTINCT maps.title, maps.id, users.username, user_id
   FROM maps
   JOIN users on maps.user_id = users.id
   WHERE maps.removed_at IS NULL
@@ -144,7 +144,7 @@ const getAllMaps = function(db) {
     .then(res => res.rows);
 };
 
-// updateMap helper function to update title of user's own map.
+// updateMap helper function to update title of map.
 
 const updateMap = function(db, mapID, mapDetails) {
   return db.query(`
@@ -155,7 +155,7 @@ const updateMap = function(db, mapID, mapDetails) {
     .then(res => res.rows);
 };
 
-// deleteMap helper function to delete user's own map (does not remove from db, rather changes 'removed_at' from NULL to Date stamp.).
+// deleteMap helper function to delete map (does not remove from db, rather changes 'removed_at' from NULL to Date stamp.).
 
 const deleteMap = function(db, mapID) {
   return db.query(`

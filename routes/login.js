@@ -18,7 +18,7 @@ module.exports = (db) => {
     }
   });
 
-  // POST to /login only if existing user with valid username, email and password. Checks if username and email have previously been registered via helper functions getUserByUsername and getUserByEmail in helpers.js file. If username, email, or password don't match, error message is shown - for privacy, message doesn't indicate which is incorrect. Once logged in, redirects to /maps (for now, can be changed to redirect to user's profile or create new map, etc. later.)
+  // POST to /login only if existing user with valid username, email and password. Checks if username and email have previously been registered via helper functions getUserByUsername and getUserByEmail in helpers.js file. If username, email, or password don't match, error message is shown - for privacy, message doesn't indicate which is incorrect. Once logged in, redirects to /users/:id.
   router.post('/', (req, res) => {
     const user = {
       username: req.body.username,
@@ -67,7 +67,7 @@ module.exports = (db) => {
                   req.session.username = username;
                   templateVars.mapName = null;
                   console.log(req.session);
-                  res.redirect('/maps');
+                  res.redirect(`/users/${userID}`);
                 }
               });
           }
