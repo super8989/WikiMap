@@ -25,33 +25,23 @@ You may also manage, delete and edit any maps and points that you have created. 
 
 ![Pin visualization(map or pin owner)](https://github.com/super8989/WikiMap/blob/master/docs/wikimap_pin_manage.png)
 
-## Getting Started
 
-1. Create the `.env` by using `.env.example` as a reference: `cp .env.example .env`
-2. Update the .env file with your correct local information 
-  - username: `labber` 
-  - password: `labber` 
-  - database: `wikimap`
-3. Install dependencies: `npm i`
-4. Fix to binaries for sass: `npm rebuild node-sass`
-5. Reset database: `npm run db:reset`
-  - Check the db folder to see what gets created and seeded in the SDB
-7. Run the server: `npm run local`
-  - Note: nodemon is used, so you should not have to restart your server
-8. Visit `http://localhost:8080/`
+## Technologies Information/Stack
 
-## Technologies Used
-
-- Node.JS
-- SASS
-- Bootstrap 4.5
-- Leaflet.JS
+- JavaScript
 - jQuery
+- Bootstrap 4.5
+- EJS
 - AJAX
+- Node.js
+- Express
+- SASS
+- PostgreSQL
+- Leaflet.js
 - Maptiler
 - Mapquest
 - Font Awesome
-- PostgreSQL
+
 
 ## Dependencies
 
@@ -68,3 +58,18 @@ You may also manage, delete and edit any maps and points that you have created. 
 - Express
 - Nodemon
 - EJS
+
+## Getting Started
+
+1. Create the `.env` by using `.env.example` as a reference: `cp .env.example .env`
+2. Update the .env file with your correct local information 
+  - username: `labber` 
+  - password: `labber` 
+  - database: `wikimap`
+3. Install dependencies: `npm i`
+4. Fix to binaries for sass: `npm rebuild node-sass`
+5. Reset database: `npm run db:reset`
+  - Check the db folder to see what gets created and seeded in the SDB
+7. Run the server: `npm run local`
+  - Note: nodemon is used, so you should not have to restart your server
+8. Visit `http://localhost:8080/`
